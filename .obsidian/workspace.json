@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "764ecc4a84160be5",
+        "id": "e8b8d10125d842da",
         "type": "tabs",
         "children": [
           {
-            "id": "90d9790c5856c18a",
+            "id": "73dbcf403b7ec856",
             "type": "leaf",
             "state": {
               "type": "beautitab-react-view",
@@ -80,7 +80,7 @@
             }
           },
           {
-            "id": "d1e2a49041a31c6d",
+            "id": "a0e297b171f1647f",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -194,11 +194,12 @@
       "obsidian-weread-plugin:同步微信读书笔记": false
     }
   },
-  "active": "90d9790c5856c18a",
+  "active": "73dbcf403b7ec856",
   "lastOpenFiles": [
     "AI 指令/ChatGPT文本分段.md",
-    "超Carry的柴西/开车7000km去贝加尔湖，探秘苏联第一颗原子弹爆炸的核禁区.md",
+    "超Carry的柴西/我住进了国内最强雪山悬崖小屋！跟着张骞重走河西走廊.md",
     "微信读书Gallery.md",
+    "超Carry的柴西/开车7000km去贝加尔湖，探秘苏联第一颗原子弹爆炸的核禁区.md",
     "微信读书/巨婴国 (武志红) (Z-Library)-CB_ABS3OI3Lb9dG6y66ww2Jq8Lk.md",
     "微信读书/中县干部 (冯军旗) (Z-Library).md",
     "微信读书/社会学与生活（精要插图第11版）理查德·谢弗.md",
@@ -225,7 +226,6 @@
     "杉杉妄想症",
     "2026-01-02.md",
     "木子的生命管理/生命管理简介：在混乱生活中，获得最长久的掌控.md",
-    "木子的生命管理/心理学与生命管理：为什么人，会感到迷茫焦虑？.md",
     "木鱼水心",
     "超Carry的柴西",
     "NOPEACE",
