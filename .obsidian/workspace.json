@@ -1,0 +1,251 @@
+{
+  "main": {
+    "id": "5324373015726ba8",
+    "type": "split",
+    "children": [
+      {
+        "id": "764ecc4a84160be5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "90d9790c5856c18a",
+            "type": "leaf",
+            "state": {
+              "type": "beautitab-react-view",
+              "state": {},
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d909007197aacb66",
+    "type": "split",
+    "children": [
+      {
+        "id": "9cef35ba51326496",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1b4fb7009797dd14",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": true,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "218c0761ad7f2815",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          },
+          {
+            "id": "68120f4d48632857",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "7d8aadaa6875f7fd",
+            "type": "leaf",
+            "state": {
+              "type": "recent-files",
+              "state": {},
+              "icon": "clock",
+              "title": "Recent Files"
+            }
+          },
+          {
+            "id": "d1e2a49041a31c6d",
+            "type": "leaf",
+            "state": {
+              "type": "mk-path-view",
+              "state": {},
+              "icon": "layout-grid",
+              "title": "Navigator"
+            }
+          }
+        ],
+        "currentTab": 2
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "bcfdeec2810eb841",
+    "type": "split",
+    "children": [
+      {
+        "id": "b1a87c78af9e1c81",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bd2a979d829f0f55",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": true,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": true,
+                "searchQuery": "",
+                "backlinkCollapsed": true,
+                "unlinkedCollapsed": false
+              },
+              "icon": "links-coming-in",
+              "title": "反向链接"
+            }
+          },
+          {
+            "id": "b87cc63d6c6860e8",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "出链"
+            }
+          },
+          {
+            "id": "87bcd58d1c3aeb68",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": false,
+                "showSearch": true,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "638b05acf653d431",
+            "type": "leaf",
+            "state": {
+              "type": "quiet-outline",
+              "state": {},
+              "icon": "lines-of-text",
+              "title": "Quiet Outline"
+            }
+          },
+          {
+            "id": "0c5846cc4b29923e",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {},
+              "icon": "lucide-ghost",
+              "title": "calendar"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 278.5,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false,
+      "obsidian-read-it-later:ReadItLater: Create from clipboard": false,
+      "templater-obsidian:Templater": false,
+      "i18n:I18N": false,
+      "homepage:打开主页": false,
+      "obsidian42-brat:BRAT": false,
+      "obsidian-weread-plugin:同步微信读书笔记": false
+    }
+  },
+  "active": "90d9790c5856c18a",
+  "lastOpenFiles": [
+    "AI 指令/ChatGPT文本分段.md",
+    "超Carry的柴西/开车7000km去贝加尔湖，探秘苏联第一颗原子弹爆炸的核禁区.md",
+    "微信读书Gallery.md",
+    "微信读书/巨婴国 (武志红) (Z-Library)-CB_ABS3OI3Lb9dG6y66ww2Jq8Lk.md",
+    "微信读书/中县干部 (冯军旗) (Z-Library).md",
+    "微信读书/社会学与生活（精要插图第11版）理查德·谢弗.md",
+    "微信读书/巨婴国 (武志红) (Z-Library)-CB_CJ462w60NAIe6yC6wwGxj1Pw.md",
+    "微信读书/追寻兴奋：文明化过程中的体育与休闲.md",
+    "微信读书/信仰与德行.md",
+    "微信读书/法学教书匠的日常.md",
+    "微信读书/摩登语言学.md",
+    "README.md",
+    "Tags",
+    "要当学霸的猫/队友越拉，责任越大，井冈山到底有多难上？【绝境时刻1】.md",
+    "唯一讲述者/高级傻X，是怎样炼成的？知识分子的四种幻觉！.md",
+    "要当学霸的猫",
+    "唯一讲述者",
+    "渤海小吏/Untitled.md",
+    "毒舌的南瓜/“无家可归税”、“纵火赚钱”，用人做燃料的美利坚【毒舌的南瓜】.md",
+    "毒舌的南瓜/牢A成功跑路回国！为什么说中国人都是精灵族？【毒舌的南瓜】.md",
+    "小岛浪吹/【小岛求助】百万大v的现身说法，说说共产党是怎么抢走我的财产的.md",
+    "AI 指令/整理成适配Obsidian的Markdown源码.md",
+    "AI 指令/文本内容划重点.md",
+    "杉杉妄想症/深度解析《燃烧女子的肖像》中的看与被看，全片没有一个男人，父权社会的阴影却又无处不在.md",
+    "安森垚/非洲起源论又被推翻了？.md",
+    "小岛浪吹/【小岛浪吹】 (内含国民党通共证据) 国民党的党生巅峰，对共产党的唯一胜利.md",
+    "杉杉妄想症",
+    "2026-01-02.md",
+    "木子的生命管理/生命管理简介：在混乱生活中，获得最长久的掌控.md",
+    "木子的生命管理/心理学与生命管理：为什么人，会感到迷茫焦虑？.md",
+    "木鱼水心",
+    "超Carry的柴西",
+    "NOPEACE",
+    "渤海小吏/安史之乱",
+    "哔哩名人演讲录",
+    "博尔米奥的雪景，伦巴第大区，意大利.jpg",
+    "卡酱目标全白金",
+    "相册/人物图鉴/佐保里.jpg",
+    "相册/人物图鉴/椰椰头.jpg",
+    "相册/人物图鉴/柴小桑的背影.jpg",
+    "相册/人物图鉴/柴小桑证件照.jpg",
+    "外刊资讯/图像/读书买书，我最喜欢这些出版社和出版公司-cfZF40Le3G.jpeg",
+    "外刊资讯/图像/读书买书，我最喜欢这些出版社和出版公司-bxBFH5bvg2.jpeg",
+    "外刊资讯/图像/读书买书，我最喜欢这些出版社和出版公司-itesoyUqHe.jpeg",
+    "瓦尔·布兰德特, 布雷西亚, 伦巴第大区, 意大利.jpg",
+    "外刊资讯/图像/August_27_2025.jpg",
+    "未命名.canvas",
+    "the Attic/示例看板.canvas",
+    "the Attic/同步方式.canvas",
+    "obsidian-tasks-main/obsidian-tasks-main/resources/sample_vaults/Tasks-Demo/Manual Testing/Frontmatter/Frontmatter code.canvas",
+    "the Attic/示例白板.canvas"
+  ]
+}
