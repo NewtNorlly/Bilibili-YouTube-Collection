@@ -1,8 +1,12 @@
 {
+  "promptDelete": false,
+  "pdfExportSettings": {
+    "includeName": true,
+    "pageSize": "A4",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 66
+  },
   "alwaysUpdateLinks": true,
-  "attachmentFolderPath": ".",
-  "newFileLocation": "current",
-  "newLinkFormat": "shortest",
-  "showUnsupportedFiles": true,
-  "useMarkdownLinks": true
+  "readableLineLength": false
 }

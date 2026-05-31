@@ -1,3 +1,5 @@
 {
-  "snapToObjects": true
+  "snapToObjects": true,
+  "snapToGrid": true,
+  "defaultModDragBehavior": "card"
 }
