@@ -1,0 +1,7 @@
+{
+  "id": "homepage",
+  "name": "Homepage",
+  "version": "4.2",
+  "minAppVersion": "1.6.0",
+  "description": "Open a specified note on startup"
+}

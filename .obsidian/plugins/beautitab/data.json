@@ -1,0 +1,17 @@
+{
+  "accessibility": {},
+  "background": {
+    "brightness": 0.82,
+    "grayscale": 0.2,
+    "type": "image"
+  },
+  "greeting": {
+    "text": "Hi, welcome back"
+  },
+  "search": {
+    "searchEngine": "google",
+    "showLogo": true,
+    "showRecentlyOpened": true
+  },
+  "signature": ""
+}
