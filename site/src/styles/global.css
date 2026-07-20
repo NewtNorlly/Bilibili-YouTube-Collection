@@ -18,6 +18,9 @@
   h1,
   h2,
   h3,
+  h4,
+  h5,
+  h6,
   p,
   figure,
   blockquote,
@@ -69,6 +72,11 @@
     --font-serif: "Songti SC", "STSong", "Noto Serif CJK SC", "SimSun", serif;
     --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
     --font-latin: Baskerville, "Times New Roman", serif;
+    --text-min: 0.875rem;
+    --text-base: 1rem;
+    --text-lead: 1.125rem;
+    --title-small: 1.25rem;
+    --title-large: clamp(1.65rem, 3vw, 2.45rem);
     --radius-sm: 3px;
     --radius-md: 7px;
     --shell: 76rem;
@@ -90,7 +98,7 @@
       linear-gradient(90deg, transparent 0 49.9%, rgb(110 85 53 / 2%) 50%, transparent 50.1%),
       radial-gradient(circle at 15% 15%, rgb(255 255 255 / 35%), transparent 28rem),
       var(--paper);
-    font-size: 1rem;
+    font-size: var(--text-base);
     line-height: 1.75;
     text-rendering: optimizeLegibility;
   }
@@ -120,8 +128,12 @@
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-serif);
+    font-size: var(--title-small);
     font-weight: 600;
     line-height: 1.25;
     text-wrap: balance;
@@ -130,6 +142,12 @@
   p,
   li {
     text-wrap: pretty;
+  }
+
+  small,
+  sub,
+  sup {
+    font-size: var(--text-min);
   }
 
   .shell {
@@ -197,7 +215,7 @@
     background: var(--vermillion);
     color: var(--sheet);
     font-family: var(--font-serif);
-    font-size: 1.3rem;
+    font-size: var(--title-small);
     line-height: 1;
     box-shadow: inset 0 0 0 1px rgb(255 255 255 / 24%);
   }
@@ -209,7 +227,7 @@
 
   .site-brand__name {
     font-family: var(--font-serif);
-    font-size: 1.15rem;
+    font-size: var(--text-lead);
     font-weight: 700;
     letter-spacing: 0.08em;
   }
@@ -217,7 +235,7 @@
   .site-brand__sub {
     color: var(--ink-faint);
     font-family: var(--font-latin);
-    font-size: 0.68rem;
+    font-size: var(--text-min);
     letter-spacing: 0.13em;
   }
 
@@ -225,7 +243,7 @@
     display: flex;
     align-items: center;
     gap: clamp(1rem, 2.2vw, 2rem);
-    font-size: 0.86rem;
+    font-size: var(--text-min);
     font-weight: 600;
     letter-spacing: 0.08em;
   }
@@ -275,7 +293,7 @@
   .site-footer__title {
     color: var(--sheet);
     font-family: var(--font-serif);
-    font-size: 1.2rem;
+    font-size: var(--text-lead);
     font-weight: 700;
     letter-spacing: 0.08em;
   }
@@ -283,7 +301,7 @@
   .site-footer__note,
   .site-footer__meta {
     color: var(--footer-muted);
-    font-size: 0.82rem;
+    font-size: var(--text-min);
   }
 
   .site-footer__meta {
@@ -333,7 +351,7 @@
   .cover__fallback span {
     color: var(--ink-soft);
     font-family: var(--font-serif);
-    font-size: clamp(2rem, 6vw, 4rem);
+    font-size: var(--title-large);
     line-height: 1;
   }
 
@@ -352,7 +370,7 @@
     padding-block: 1.25rem;
     border-bottom: 1px solid var(--line-soft);
     color: var(--ink-soft);
-    font-size: 0.78rem;
+    font-size: var(--text-min);
   }
 
   .breadcrumbs ol {
@@ -401,11 +419,12 @@
 
   .entry-card__meta {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.65rem;
     margin-bottom: 0.55rem;
     color: var(--vermillion-dark);
-    font-size: 0.72rem;
+    font-size: var(--text-min);
     font-weight: 700;
     letter-spacing: 0.09em;
   }
@@ -422,7 +441,7 @@
   }
 
   .entry-card h3 {
-    font-size: clamp(1.15rem, 3.5cqi, 1.45rem);
+    font-size: var(--title-small);
     line-height: 1.45;
   }
 
@@ -436,7 +455,7 @@
     margin-top: 0.6rem;
     color: var(--ink-soft);
     font-family: var(--font-serif);
-    font-size: 0.9rem;
+    font-size: var(--text-min);
     line-height: 1.75;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
@@ -458,7 +477,7 @@
     border: 1px solid var(--line);
     border-radius: 999px;
     color: var(--ink-soft);
-    font-size: 0.68rem;
+    font-size: var(--text-min);
     text-decoration: none;
   }
 
@@ -493,19 +512,19 @@
   }
 
   .section-heading__title {
-    font-size: clamp(1.65rem, 3vw, 2.45rem);
+    font-size: var(--title-large);
   }
 
   .section-heading__index {
     color: var(--vermillion);
     font-family: var(--font-latin);
-    font-size: 0.78rem;
+    font-size: var(--text-min);
     letter-spacing: 0.12em;
   }
 
   .eyebrow {
     color: var(--vermillion-dark);
-    font-size: 0.72rem;
+    font-size: var(--text-min);
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -535,7 +554,7 @@
   .archive-hero h1 {
     max-width: 13em;
     margin-top: 1.15rem;
-    font-size: clamp(3rem, 8vw, 6.8rem);
+    font-size: var(--title-large);
     font-weight: 500;
     letter-spacing: -0.045em;
     line-height: 1.03;
@@ -546,7 +565,7 @@
     margin-top: 1.8rem;
     color: var(--ink-soft);
     font-family: var(--font-serif);
-    font-size: clamp(1rem, 1.8vw, 1.18rem);
+    font-size: var(--text-lead);
   }
 
   .archive-hero__ledger {
@@ -563,7 +582,7 @@
 
   .archive-hero__ledger dt {
     color: var(--ink-soft);
-    font-size: 0.76rem;
+    font-size: var(--text-min);
     letter-spacing: 0.08em;
   }
 
@@ -607,13 +626,13 @@
   .collection-card__number {
     color: var(--vermillion);
     font-family: var(--font-latin);
-    font-size: 0.72rem;
+    font-size: var(--text-min);
     letter-spacing: 0.1em;
   }
 
   .collection-card h3 {
     margin-top: 3rem;
-    font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+    font-size: var(--title-small);
   }
 
   .collection-card__description {
@@ -622,7 +641,7 @@
     margin-top: 0.65rem;
     color: var(--ink-soft);
     font-family: var(--font-serif);
-    font-size: 0.84rem;
+    font-size: var(--text-min);
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
@@ -633,7 +652,7 @@
     bottom: 1.35rem;
     left: 1.6rem;
     color: var(--ink-faint);
-    font-size: 0.7rem;
+    font-size: var(--text-min);
     letter-spacing: 0.05em;
   }
 
@@ -658,18 +677,18 @@
   .topic-link__index {
     color: var(--vermillion);
     font-family: var(--font-latin);
-    font-size: 0.72rem;
+    font-size: var(--text-min);
   }
 
   .topic-link__name {
     font-family: var(--font-serif);
-    font-size: 1.1rem;
+    font-size: var(--text-lead);
     font-weight: 600;
   }
 
   .topic-link__count {
     color: var(--ink-faint);
-    font-size: 0.7rem;
+    font-size: var(--text-min);
   }
 
   .page-hero {
@@ -687,7 +706,7 @@
   .page-hero h1 {
     max-width: 14em;
     margin-top: 0.9rem;
-    font-size: clamp(2.6rem, 7vw, 5.8rem);
+    font-size: var(--title-large);
     font-weight: 500;
     letter-spacing: -0.035em;
   }
@@ -697,7 +716,7 @@
     margin-top: 1.3rem;
     color: var(--ink-soft);
     font-family: var(--font-serif);
-    font-size: 1.03rem;
+    font-size: var(--text-base);
   }
 
   .page-hero__facts {
@@ -712,7 +731,7 @@
     padding-block: 0.8rem;
     border-bottom: 1px solid var(--line);
     color: var(--ink-soft);
-    font-size: 0.76rem;
+    font-size: var(--text-min);
   }
 
   .page-hero__facts strong {
@@ -739,13 +758,13 @@
   .not-found__code {
     color: var(--vermillion);
     font-family: var(--font-latin);
-    font-size: clamp(5rem, 18vw, 11rem);
+    font-size: var(--title-large);
     line-height: 0.8;
   }
 
   .not-found h1 {
     margin-top: 2rem;
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: var(--title-large);
   }
 
   .not-found p {
@@ -762,7 +781,7 @@
     padding-inline: 1.1rem;
     border: 1px solid var(--ink);
     border-radius: var(--radius-sm);
-    font-size: 0.82rem;
+    font-size: var(--text-min);
     font-weight: 700;
     text-decoration: none;
     transition: background-color 160ms ease, color 160ms ease;
@@ -836,7 +855,7 @@
   }
 
   .site-brand__sub {
-    font-size: 0.58rem;
+    font-size: var(--text-min);
   }
 
   .site-nav {
@@ -845,7 +864,7 @@
     gap: 0.65rem;
     padding-top: 0.7rem;
     border-top: 1px solid var(--line);
-    font-size: 0.76rem;
+    font-size: var(--text-min);
   }
 
   .site-footer__inner {
@@ -858,10 +877,6 @@
 
   .site-footer__meta {
     text-align: left;
-  }
-
-  .archive-hero h1 {
-    font-size: clamp(2.8rem, 15vw, 4.5rem);
   }
 
   .entry-grid,
@@ -889,16 +904,12 @@
     display: none;
   }
 
-  .article-header h1 {
-    font-size: clamp(2.25rem, 11vw, 3.5rem);
-  }
-
   .article-layout {
     padding-top: 2.75rem;
   }
 
   .prose {
-    font-size: 1rem;
+    font-size: var(--text-base);
     line-height: 1.95;
   }
 
