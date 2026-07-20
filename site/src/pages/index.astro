@@ -1,0 +1,123 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import EntryCard from "../components/EntryCard.astro";
+import { getCatalog } from "../lib/catalog";
+import { collectionUrl, topicUrl } from "../lib/url";
+
+const catalog = await getCatalog();
+const notes = catalog.notes.filter((note) => !note.draft);
+const collections = catalog.collections;
+const topics = catalog.topics;
+
+const featuredNotes = collections
+  .flatMap((collection) => {
+    const note = notes.find((item) => item.collectionId === collection.id);
+    return note ? [note] : [];
+  })
+  .slice(0, 9);
+
+const collectionKindLabel = (kind: string) => {
+  if (kind === "library") return "书库";
+  if (kind === "series") return "专题集";
+  return "创作者";
+};
+---
+
+<BaseLayout>
+  <section class="archive-hero">
+    <div class="shell archive-hero__grid">
+      <div>
+        <p class="eyebrow">Public text archive · 公开文本档案</p>
+        <h1>从影像，<br />到可检索的文字。</h1>
+        <p class="archive-hero__lead">
+          按创作者与专题整理哔哩哔哩、YouTube 相关文本，也收藏独立的阅读笔记。
+          这里保留原有目录关系，让每一次摘录都有出处可循。
+        </p>
+      </div>
+
+      <dl class="archive-hero__ledger" aria-label="档案统计">
+        <div>
+          <dt>收录文本</dt>
+          <dd>{notes.length}</dd>
+        </div>
+        <div>
+          <dt>内容合集</dt>
+          <dd>{collections.length}</dd>
+        </div>
+        <div>
+          <dt>独立专题</dt>
+          <dd>{topics.length}</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="home-section home-section--ruled" id="collections">
+    <div class="shell">
+      <header class="section-heading">
+        <h2 class="section-heading__title">合集目录</h2>
+        <p class="section-heading__index">COLLECTIONS / {String(collections.length).padStart(2, "0")}</p>
+      </header>
+
+      {collections.length > 0 ? (
+        <div class="collection-grid">
+          {collections.map((collection, index) => (
+            <a class="collection-card" href={collectionUrl(collection.id)}>
+              <p class="collection-card__number">
+                {String(index + 1).padStart(2, "0")} · {collectionKindLabel(collection.kind)}
+              </p>
+              <h3>{collection.name}</h3>
+              {collection.description && (
+                <p class="collection-card__description">{collection.description}</p>
+              )}
+              <p class="collection-card__counts">
+                {collection.noteCount} 篇文本
+                {collection.topicCount > 0 && ` · ${collection.topicCount} 个专题`}
+              </p>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">仓库中暂时没有可发布的合集。</p>
+      )}
+    </div>
+  </section>
+
+  {topics.length > 0 && (
+    <section class="home-section home-section--ruled" id="topics">
+      <div class="shell">
+        <header class="section-heading">
+          <h2 class="section-heading__title">专题索引</h2>
+          <p class="section-heading__index">TOPICS / {String(topics.length).padStart(2, "0")}</p>
+        </header>
+
+        <ol class="topic-list">
+          {topics.map((topic, index) => (
+            <li>
+              <a class="topic-link" href={topicUrl(topic.id)}>
+                <span class="topic-link__index">{String(index + 1).padStart(2, "0")}</span>
+                <span class="topic-link__name">{topic.name}</span>
+                <span class="topic-link__count">{topic.noteCount} 篇</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  {featuredNotes.length > 0 && (
+    <section class="home-section home-section--ruled">
+      <div class="shell">
+        <header class="section-heading">
+          <h2 class="section-heading__title">档案选读</h2>
+          <p class="section-heading__index">FROM THE COLLECTION</p>
+        </header>
+
+        <div class="entry-grid">
+          {featuredNotes.map((note) => <EntryCard note={note} showCollection />)}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

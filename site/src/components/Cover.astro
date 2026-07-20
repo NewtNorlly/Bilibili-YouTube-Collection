@@ -1,0 +1,39 @@
+---
+import type { Cover as CoverData } from "../lib/catalog";
+
+interface Props {
+  cover?: CoverData;
+  title: string;
+  eager?: boolean;
+  class?: string;
+}
+
+const {
+  cover,
+  title,
+  eager = false,
+  class: className = "",
+} = Astro.props;
+
+const positionX = cover?.positionX ?? 50;
+const positionY = cover?.positionY ?? 50;
+const fallbackCharacter = Array.from(title.trim())[0] ?? "文";
+---
+
+<figure class:list={["cover", className, { "cover--empty": !cover }]}>
+  {cover ? (
+    <img
+      src={cover.src}
+      alt={cover.alt || `${title}封面`}
+      loading={eager ? "eager" : "lazy"}
+      fetchpriority={eager ? "high" : "auto"}
+      decoding="async"
+      style={`object-position: ${positionX}% ${positionY}%;`}
+    />
+  ) : (
+    <div class="cover__fallback" aria-hidden="true">
+      <span>{fallbackCharacter}</span>
+      <i></i>
+    </div>
+  )}
+</figure>

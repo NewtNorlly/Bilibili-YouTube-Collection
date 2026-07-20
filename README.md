@@ -94,8 +94,38 @@ Bilibili-Youtube-Collection/
 克隆仓库到本地
 
 ```bash
-git clone https://github.com/NewtNolly/Bilibili-Youtube-Collection.git
+git clone https://github.com/NewtNorlly/Bilibili-YouTube-Collection.git
 ```
+
+## 🌐 在线网站
+
+收藏内容已整理为静态网站：
+
+https://newtnorlly.github.io/Bilibili-YouTube-Collection/
+
+## 🖥️ 本地运行网站
+
+网站源码位于 `site` 文件夹，需要 Node.js 24 与 pnpm 11：
+
+```bash
+cd site
+corepack enable
+pnpm install
+pnpm dev
+```
+
+生成并预览正式版本：
+
+```bash
+pnpm build
+pnpm preview
+```
+
+## 🚀 GitHub Pages 自动部署
+
+仓库使用 `.github/workflows/pages.yml` 自动构建和发布网站。首次使用时，请在仓库的 `Settings → Pages` 中，将 `Build and deployment` 的 `Source` 设为 `GitHub Actions`。
+
+之后只要把文章、专题或封面更新推送到 `main` 分支，GitHub Actions 就会重新构建并发布网站；也可以在仓库的 `Actions` 页面手动运行部署工作流。
 
 使用与更新建议
 
@@ -111,5 +141,3 @@ git push
 
 ## ✉️ 版权与联系方式
 <div style="background-color: #ffeef2; padding: 20px; border-radius: 8px; text-align: center; margin-top: 30px; border: 1px solid #d2d4d5;">© 2026 NewtNolly<br><br>📧 联系邮箱：newtnolly@outlook.com<br>📄 许可协议： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: #fb7299; text-decoration: none; font-weight: 600;"> CC BY-NC-SA 4.0（非商用共享） </a><br>⚠️ 说明：本仓库为个人内容收藏整理，仅用于个人学习与查阅，严禁用于商业用途。</div>
-
-
