@@ -1,3 +1,15 @@
+---
+cover:
+  image: '文本附件/generated-cover-77574a3d33fb-960.webp'
+  actualRatio: '3:2'
+  pixelWidth: 960
+  pixelHeight: 640
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
+---
+
 
 前两天《纽约时报》正式报道了中国网友这段时间讨论得热火朝天的“斩杀线”概念。在同一天，英国的《经济学人》也写了一篇这个话题的文章，合着你们名为报道，实际上是在变相开盒，被《纽约时报》《经济学人》轮番点名，整件事顿时变得刺激了起来。要知道，美利坚对于这种戳他们短的人，那从来都是重拳出击的。
 

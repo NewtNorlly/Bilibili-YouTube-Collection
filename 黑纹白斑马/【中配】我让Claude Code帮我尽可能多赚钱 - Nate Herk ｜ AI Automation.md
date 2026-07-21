@@ -1,3 +1,15 @@
+---
+cover:
+  image: '文本附件/generated-cover-af96c56fc4c5-960.webp'
+  actualRatio: '3:2'
+  pixelWidth: 960
+  pixelHeight: 640
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
+---
+
 
 哦，我搞清楚了怎么把 Claude Code 变成我能拥有的最棒的商业伙伴。过去 30 天里，我的收入翻了三倍。你要知道 Claude 有很多问题，大多数人从来都没注意到。每一个问题都会让你在那些根本成不了的事情上浪费时间和金钱。所以我做的就是打造了四项优化，把这些问题逐个解决。这四项优化能把 Claude 从单纯浪费你时间的工具变成真正能帮你赚钱的帮手。不管你是想开发应用、运营代理公司，还是做 AI 咨询，都能用得上。只要你在 Claude 里做事，不管做什么，这个方法都管用。所以这期视频里我会给大家讲这四项优化，还有具体怎么用它们赚更多钱。咱们开始吧。
 

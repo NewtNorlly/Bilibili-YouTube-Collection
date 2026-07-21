@@ -1,3 +1,15 @@
+---
+cover:
+  image: '文本附件/generated-cover-d66928fd1c46-960.webp'
+  actualRatio: '3:2'
+  pixelWidth: 960
+  pixelHeight: 640
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
+---
+
 
 什么孙哥也下场做 token 生意了，什么复盛也在搞 API 中转，什么连特朗普都下场了。上网随便一搜，API 中转站仿佛已经成为了 2026 年地球上最赚钱的买卖，零成本空手套白狼，发家致富有手就行，月入百万的神话比比皆是，真的假的呀？
 

@@ -1,3 +1,15 @@
+---
+cover:
+  image: '文本附件/generated-cover-d6e4a7940709-960.webp'
+  actualRatio: '3:2'
+  pixelWidth: 960
+  pixelHeight: 640
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
+---
+
 
 现在LV6用户越来越多了，大家可能不会知道，放在几年前的B站LV6用户那都是大佬级别的存在。但随着时间推移和B站发展，升级到LV6的用户越来越多了。今天就给大家讲讲六级用户相比于三四五级都有什么特权功能。
 

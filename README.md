@@ -121,6 +121,16 @@ pnpm build
 pnpm preview
 ```
 
+### 自动补齐文章封面
+
+新增文章后，可在 `site` 文件夹执行：
+
+```bash
+pnpm generate:covers
+```
+
+脚本只处理尚无封面的已发布 Markdown：它会在文章对应的 `文本附件` 文件夹生成 480px 与 960px 两档 WebP，并自动写入文章的 `cover` 配置。重复运行不会覆盖已有封面；随后执行 `pnpm build` 即可在网站中使用。
+
 ## 🚀 GitHub Pages 自动部署
 
 仓库使用 `.github/workflows/pages.yml` 自动构建和发布网站。首次使用时，请在仓库的 `Settings → Pages` 中，将 `Build and deployment` 的 `Source` 设为 `GitHub Actions`。

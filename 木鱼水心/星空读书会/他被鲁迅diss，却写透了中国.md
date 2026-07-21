@@ -1,3 +1,15 @@
+---
+cover:
+  image: '文本附件/generated-cover-faa7bc903c4d-960.webp'
+  actualRatio: '3:2'
+  pixelWidth: 960
+  pixelHeight: 640
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
+---
+
 
 ### 开场白
 

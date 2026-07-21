@@ -1,3 +1,15 @@
+---
+cover:
+  image: '文本附件/generated-cover-54538329a974-960.webp'
+  actualRatio: '3:2'
+  pixelWidth: 960
+  pixelHeight: 640
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
+---
+
 
 在罗马帝国之前是罗马共和国，而在那之前是罗马王政时代。而这一切的起源其实并非罗马城，它发源于阿尔巴隆加，这座古城距离现在的罗马约25公里。
 

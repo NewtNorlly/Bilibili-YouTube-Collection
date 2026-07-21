@@ -1,3 +1,15 @@
+---
+cover:
+  image: '文本附件/generated-cover-f3b6abaa7998-960.webp'
+  actualRatio: '3:2'
+  pixelWidth: 960
+  pixelHeight: 640
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
+---
+
 
 这段时间没有什么合适的选题啊，但是不上班又不行，不上班没饭吃啊。所以这一期呢我就给大家分享一些我读过的书里边一些比较有意思的观点。也算是拆书，也算是杂谈，正好让大家看一看我讲课的实力啊，到时候大家可以放心买我的课，让我好挣点钱。退休啊，我真想退休了，我确实他妈太累了。
 

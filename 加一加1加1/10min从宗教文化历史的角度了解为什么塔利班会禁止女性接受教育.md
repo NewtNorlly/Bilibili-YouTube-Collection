@@ -1,3 +1,15 @@
+---
+cover:
+  image: '文本附件/generated-cover-97900b94cab5-960.webp'
+  actualRatio: '3:2'
+  pixelWidth: 960
+  pixelHeight: 640
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
+---
+
 
 审核你好，本视频仅做阿富汗历史科普，无意挑拨对立，请手下留情。
 

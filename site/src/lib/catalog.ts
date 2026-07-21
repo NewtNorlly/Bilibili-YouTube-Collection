@@ -15,6 +15,7 @@ const collator = new Intl.Collator('zh-CN-u-co-pinyin', {
 
 export interface Cover {
   src: string;
+  srcSet?: string;
   alt: string;
   positionX?: number;
   positionY?: number;
@@ -170,6 +171,20 @@ function resolveAssetPath(sourcePath: string, assetPath: string): string | undef
   return undefined;
 }
 
+function localCoverMedia(localPath: string): Pick<Cover, 'src' | 'srcSet'> {
+  const src = mediaUrl(localPath);
+  if (!/-960\.webp$/i.test(localPath)) return { src };
+
+  const smallPath = localPath.replace(/-960\.webp$/i, '-480.webp');
+  const smallAbsolutePath = path.resolve(repositoryRoot, ...smallPath.split('/'));
+  if (!existsSync(smallAbsolutePath)) return { src };
+
+  return {
+    src,
+    srcSet: `${mediaUrl(smallPath)} 480w, ${src} 960w`,
+  };
+}
+
 function getCover(data: RawData, title: string, sourcePath: string): Cover | undefined {
   const rawCover = data.cover;
   if (!rawCover) return undefined;
@@ -179,7 +194,7 @@ function getCover(data: RawData, title: string, sourcePath: string): Cover | und
     if (remoteCover) return { src: remoteCover, alt: `${title}封面` };
 
     const localPath = resolveAssetPath(sourcePath, rawCover);
-    return localPath ? { src: mediaUrl(localPath), alt: `${title}封面` } : undefined;
+    return localPath ? { ...localCoverMedia(localPath), alt: `${title}封面` } : undefined;
   }
 
   if (typeof rawCover !== 'object' || !('image' in rawCover)) return undefined;
@@ -190,11 +205,13 @@ function getCover(data: RawData, title: string, sourcePath: string): Cover | und
 
   const remoteCover = validHttpUrl(image);
   const localPath = remoteCover ? undefined : resolveAssetPath(sourcePath, image);
-  const src = remoteCover ?? (localPath ? mediaUrl(localPath) : undefined);
+  const localMedia = localPath ? localCoverMedia(localPath) : undefined;
+  const src = remoteCover ?? localMedia?.src;
   if (!src) return undefined;
 
   return {
     src,
+    srcSet: localMedia?.srcSet,
     alt: `${title}封面`,
     positionX: numberValue(coverData.positionX),
     positionY: numberValue(coverData.positionY),

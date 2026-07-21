@@ -1,3 +1,15 @@
+---
+cover:
+  image: '文本附件/generated-cover-4d9a022edd61-960.webp'
+  actualRatio: '3:2'
+  pixelWidth: 960
+  pixelHeight: 640
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
+---
+
 
 哈喽大家好，我是小岛。这两天呢正在度假躺平啊，两天没怎么看手机。下午休息的时候呢，看了一眼群里好多人说我被冲了。于是呢我就去看了一眼评论区啊，发现大家呢都在刷什么 4 万欧。我去网上查了一下啊，直接勃然大怒啊，我靠，共产党居然偷了我几千万啊。
 

@@ -1,3 +1,15 @@
+---
+cover:
+  image: '文本附件/generated-cover-ff45447bd741-960.webp'
+  actualRatio: '3:2'
+  pixelWidth: 960
+  pixelHeight: 640
+  displayWidth: 100
+  displayHeight: 320
+  positionX: 50
+  positionY: 50
+---
+
 
 不知道你是否还记得，去年这个时候我们还在讨论AI的幻觉问题，而今年他们突然就能写代码了。这不仅仅体现在你朋友圈里，那些文科同学开始发Cloud代码，大公司也一样——代码正从人手里转到机械手里。Anthropic的work构建支出全部是AI写的，没有一行人类代码；谷歌内部现在75%的新代码由AI生成；有人纯用AI编程，从零实现了一个AI推理引擎，跑出来比人工团队做的还快。
 

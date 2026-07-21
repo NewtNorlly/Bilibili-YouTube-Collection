@@ -1,4 +1,5 @@
 site/node_modules/
 site/dist/
 site/.astro/
+site/assets/cover-system/previews/
 site/public/media/
