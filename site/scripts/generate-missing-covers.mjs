@@ -368,11 +368,16 @@ function motifSvg(category, random, palette) {
   return elements.join("");
 }
 
+// 封面标题区域：textX = panelX + 46，可用宽度 = panelWidth - 46 - 44 = 544px
+// font-size 50px + letter-spacing 1px ≈ 51px/字，故最大单行约 10.67 个 CJK 字宽
+// 取 9.6 留出呼吸空间，确保中文标题不溢出
+const COVER_TITLE_MAX_UNITS = 9.6;
+
 function coverSvg({ title, collection, category, seed }) {
   const palette = palettes[category];
   const random = seededRandom(seed ^ 0x9e3779b9);
   const displayTitle = cleanTitle(title, collection);
-  const titleLines = wrapTitle(displayTitle, 9.6);
+  const titleLines = wrapTitle(displayTitle, COVER_TITLE_MAX_UNITS);
   const titleSize = 50;
   const lineHeight = Math.round(titleSize * 1.34);
   const panelOnLeft = random() > 0.5;
