@@ -50,6 +50,7 @@ const canonicalUrl = canonicalPath !== false && Astro.site
         </a>
 
         <nav class="site-nav" aria-label="主导航">
+          <SearchBar />
           <a href={withBase("/")}>首页</a>
           <a href={withBase("/#collections")}>合集</a>
           <a href={withBase("/#topics")}>专题</a>
@@ -59,8 +60,6 @@ const canonicalUrl = canonicalPath !== false && Astro.site
             rel="noreferrer"
           >仓库</a>
         </nav>
-
-        <SearchBar />
       </div>
     </header>
 
