@@ -1,4 +1,5 @@
 ---
+import SearchBar from "../components/SearchBar.astro";
 import "../styles/global.css";
 import { withBase } from "../lib/url";
 
@@ -58,6 +59,8 @@ const canonicalUrl = canonicalPath !== false && Astro.site
             rel="noreferrer"
           >仓库</a>
         </nav>
+
+        <SearchBar />
       </div>
     </header>
 

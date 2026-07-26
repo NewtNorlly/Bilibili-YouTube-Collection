@@ -68,7 +68,7 @@ const brokenLinks = [];
 const attributePattern = /\b(?:href|src)=(?:"([^"]+)"|'([^']+)')/gu;
 
 for (const htmlFile of htmlFiles) {
-  const html = await readFile(htmlFile, 'utf8');
+  const html = (await readFile(htmlFile, 'utf8')).replace(/<script[\s\S]*?<\/script>/gi, '');
   const pageUrl = pageUrlFor(htmlFile);
 
   for (const match of html.matchAll(attributePattern)) {
