@@ -72,8 +72,8 @@
     --font-serif: "Songti SC", "STSong", "Noto Serif CJK SC", "SimSun", serif;
     --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
     --font-latin: Baskerville, "Times New Roman", serif;
-    --text-min: 1.125rem;
-    --text-base: 1.125rem;
+    --text-min: 0.875rem;
+    --text-base: 1rem;
     --text-lead: 1.125rem;
     --title-small: 1.25rem;
     --title-large: clamp(1.65rem, 3vw, 2.45rem);
@@ -243,7 +243,7 @@
     display: flex;
     align-items: center;
     gap: clamp(1rem, 2.2vw, 2rem);
-    font-size: var(--text-min);
+    font-size: 0.875rem;
     font-weight: 600;
     letter-spacing: 0.08em;
   }
@@ -506,9 +506,8 @@
     align-items: end;
     justify-content: space-between;
     gap: 2rem;
-    margin-bottom: clamp(2rem, 4vw, 3rem);
-    padding-bottom: 0.9rem;
-    border-bottom: 1px solid var(--line-dark);
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: 0.6rem;
   }
 
   .section-heading__title {
@@ -766,11 +765,11 @@
 
 @layer pages {
   .home-section {
-    padding-block: clamp(3.5rem, 7vw, 6rem);
+    padding-block: clamp(2.5rem, 5vw, 4rem);
   }
 
   .home-section--ruled {
-    border-top: 1px solid var(--line);
+    /* 自然间距分隔，无需分割线 */
   }
 
   /* ── 档案选读：左文右卡 ── */
