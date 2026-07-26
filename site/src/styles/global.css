@@ -541,8 +541,6 @@
   /* ── 雁行轮播 ── */
   .carousel {
     position: relative;
-    overflow: hidden;
-    padding-block: 1rem;
   }
 
   .carousel__stage {
@@ -550,14 +548,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 28rem;
+    min-height: 30rem;
     touch-action: pan-y;
     user-select: none;
   }
 
   .carousel__card {
     position: absolute;
-    width: min(100%, 38rem);
+    width: min(100%, 34rem);
     display: grid;
     grid-template-rows: auto 1fr;
     border-radius: var(--radius-md);
@@ -572,7 +570,6 @@
     cursor: grabbing;
   }
 
-  /* 雁行阵位置 */
   .carousel__card.is-active {
     z-index: 5;
     transform: translateX(var(--drag-offset, 0)) scale(1);
@@ -583,28 +580,28 @@
   .carousel__card.is-prev {
     z-index: 3;
     transform: translateX(-22%) scale(0.9);
-    opacity: 0.35;
+    opacity: 0.3;
     pointer-events: none;
   }
 
   .carousel__card.is-next {
     z-index: 3;
     transform: translateX(22%) scale(0.9);
-    opacity: 0.35;
+    opacity: 0.3;
     pointer-events: none;
   }
 
   .carousel__card.is-far-prev {
     z-index: 2;
     transform: translateX(-36%) scale(0.82);
-    opacity: 0.12;
+    opacity: 0.08;
     pointer-events: none;
   }
 
   .carousel__card.is-far-next {
     z-index: 2;
     transform: translateX(36%) scale(0.82);
-    opacity: 0.12;
+    opacity: 0.08;
     pointer-events: none;
   }
 
@@ -623,7 +620,7 @@
   }
 
   .carousel__body {
-    padding: 1.4rem 1.6rem 1.8rem;
+    padding: 1.3rem 1.5rem 1.6rem;
   }
 
   .carousel__meta {
@@ -631,11 +628,11 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.65rem;
-    margin-bottom: 0.55rem;
+    margin-bottom: 0.5rem;
     color: var(--vermillion-dark);
     font-size: var(--text-min);
     font-weight: 700;
-    letter-spacing: 0.09em;
+    letter-spacing: 0.08em;
   }
 
   .carousel__meta > * + *::before {
@@ -651,9 +648,9 @@
 
   .carousel__body h3 {
     font-family: var(--font-serif);
-    font-size: var(--title-small);
+    font-size: var(--text-min);
     font-weight: 600;
-    line-height: 1.45;
+    line-height: 1.5;
   }
 
   .carousel__body h3 a {
@@ -663,7 +660,7 @@
   .carousel__desc {
     display: -webkit-box;
     overflow: hidden;
-    margin-top: 0.6rem;
+    margin-top: 0.55rem;
     color: var(--ink-soft);
     font-family: var(--font-serif);
     font-size: var(--text-min);
@@ -672,58 +669,40 @@
     -webkit-line-clamp: 2;
   }
 
-  /* 控制栏 */
-  .carousel__controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.8rem;
-    margin-top: 2rem;
-  }
-
-  .carousel__btn {
+  /* 左右箭头——嵌在雁行阵两侧 */
+  .carousel__arrow {
+    position: absolute;
+    z-index: 10;
+    top: 50%;
     display: grid;
-    width: 2.8rem;
-    height: 2.8rem;
+    width: 2.6rem;
+    height: 2.6rem;
     place-items: center;
     border: 1px solid var(--line-dark);
     border-radius: 50%;
-    background: transparent;
+    background: var(--sheet);
     color: var(--ink);
     cursor: pointer;
-    transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
+    transform: translateY(-50%);
+    transition: background-color 220ms ease, border-color 220ms ease, transform 180ms ease;
   }
 
-  .carousel__btn:hover {
+  .carousel__arrow:hover {
     background: var(--ink);
     border-color: var(--ink);
     color: var(--sheet);
   }
 
-  .carousel__btn:active {
-    transform: scale(0.92);
+  .carousel__arrow:active {
+    transform: translateY(-50%) scale(0.9);
   }
 
-  .carousel__dots {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
+  .carousel__arrow--prev {
+    left: 0;
   }
 
-  .carousel__dot {
-    width: 0.55rem;
-    height: 0.55rem;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: var(--line);
-    cursor: pointer;
-    transition: background-color 240ms ease, transform 240ms ease;
-  }
-
-  .carousel__dot.is-active {
-    background: var(--vermillion);
-    transform: scale(1.55);
+  .carousel__arrow--next {
+    right: 0;
   }
 
   /* ── 首字母导航 ── */
@@ -786,68 +765,6 @@
 }
 
 @layer pages {
-  .archive-hero {
-    padding-block: clamp(4.5rem, 11vw, 9rem) clamp(4rem, 8vw, 7rem);
-  }
-
-  .archive-hero__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(17rem, 0.6fr);
-    align-items: end;
-    gap: clamp(3rem, 8vw, 8rem);
-  }
-
-  .archive-hero h1 {
-    max-width: 13em;
-    margin-top: 1.15rem;
-    font-size: var(--title-large);
-    font-weight: 500;
-    letter-spacing: -0.045em;
-    line-height: 1.03;
-  }
-
-  .archive-hero__prose {
-    max-width: 34rem;
-    margin-top: 1.8rem;
-    color: var(--ink-soft);
-    font-family: var(--font-serif);
-    font-size: var(--text-lead);
-    line-height: 1.85;
-  }
-
-  .archive-hero__prose p + p {
-    margin-top: 1.2rem;
-  }
-
-  .archive-hero__prose strong {
-    color: var(--vermillion-dark);
-    font-weight: 700;
-  }
-
-  .archive-hero__ledger {
-    border-top: 2px solid var(--ink);
-  }
-
-  .archive-hero__ledger div {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    padding-block: 1.15rem;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .archive-hero__ledger dt {
-    color: var(--ink-soft);
-    font-size: var(--text-min);
-    letter-spacing: 0.08em;
-  }
-
-  .archive-hero__ledger dd {
-    font-family: var(--font-latin);
-    font-size: 1.9rem;
-    line-height: 1;
-  }
-
   .home-section {
     padding-block: clamp(3.5rem, 7vw, 6rem);
   }
@@ -856,68 +773,163 @@
     border-top: 1px solid var(--line);
   }
 
-  .collection-card-grid {
+  /* ── 档案选读：左文右卡 ── */
+  .featured-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .featured-intro {
+    padding-top: 1.5rem;
+    color: var(--ink-soft);
+    font-family: var(--font-serif);
+    font-size: var(--text-min);
+    line-height: 1.85;
+  }
+
+  .featured-intro p + p {
+    margin-top: 1rem;
+  }
+
+  .featured-intro strong {
+    color: var(--vermillion-dark);
+    font-weight: 700;
+  }
+
+  .featured-stage {
+    min-width: 0;
+  }
+
+  /* ── 合集卡片网格 ── */
+  .coll-card-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
+    gap: clamp(1.2rem, 2.5vw, 2rem);
+  }
+
+  .coll-card {
+    display: flex;
+    flex-direction: column;
     border-radius: var(--radius-md);
+    background: var(--sheet);
+    text-decoration: none;
+    transition: box-shadow 280ms ease, transform 280ms ease;
     overflow: hidden;
   }
 
-  .collection-card-new {
-    position: relative;
+  .coll-card:hover {
+    box-shadow: 0 8px 28px rgb(67 50 30 / 14%);
+    transform: translateY(-2px);
+  }
+
+  .coll-card__cover {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--sheet-muted);
+  }
+
+  .coll-card__cover .cover {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .coll-card__body {
     display: flex;
     flex-direction: column;
-    min-height: 12rem;
-    padding: 1.35rem 1.35rem 2.8rem;
-    background: var(--sheet);
-    text-decoration: none;
-    transition: background-color 220ms ease, box-shadow 220ms ease;
+    flex: 1;
+    padding: 1rem 1.1rem 1.2rem;
   }
 
-  .collection-card-new:hover {
-    background: rgb(250 246 237 / 92%);
-    box-shadow: inset 0 0 0 1px var(--vermillion);
-    z-index: 2;
-  }
-
-  .collection-card-new__kind {
+  .coll-card__kind {
     color: var(--vermillion-dark);
     font-family: var(--font-latin);
     font-size: var(--text-min);
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
   }
 
-  .collection-card-new__name {
-    margin-top: 0.65rem;
-    font-family: var(--font-serif);
-    font-size: var(--title-small);
-    font-weight: 600;
-    line-height: 1.35;
-  }
-
-  .collection-card-new__desc {
-    display: -webkit-box;
-    overflow: hidden;
-    margin-top: 0.55rem;
-    color: var(--ink-soft);
+  .coll-card__name {
+    margin-top: 0.45rem;
     font-family: var(--font-serif);
     font-size: var(--text-min);
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    font-weight: 600;
+    line-height: 1.4;
   }
 
-  .collection-card-new__counts {
-    position: absolute;
-    right: 1.35rem;
-    bottom: 1rem;
-    left: 1.35rem;
+  .coll-card__counts {
+    margin-top: auto;
+    padding-top: 0.65rem;
     color: var(--ink-faint);
     font-size: var(--text-min);
-    letter-spacing: 0.05em;
+  }
+
+  /* ── 专题卡片网格 ── */
+  .topic-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.2rem, 2.5vw, 2rem);
+  }
+
+  .topic-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-md);
+    background: var(--sheet);
+    text-decoration: none;
+    transition: box-shadow 280ms ease, transform 280ms ease;
+    overflow: hidden;
+  }
+
+  .topic-card:hover {
+    box-shadow: 0 8px 28px rgb(67 50 30 / 14%);
+    transform: translateY(-2px);
+  }
+
+  .topic-card__cover {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--sheet-muted);
+  }
+
+  .topic-card__cover .cover {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .topic-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1rem 1.1rem 1.2rem;
+  }
+
+  .topic-card__collection {
+    color: var(--vermillion-dark);
+    font-family: var(--font-latin);
+    font-size: var(--text-min);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .topic-card__name {
+    margin-top: 0.45rem;
+    font-family: var(--font-serif);
+    font-size: var(--text-min);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .topic-card__counts {
+    margin-top: auto;
+    padding-top: 0.65rem;
+    color: var(--ink-faint);
+    font-size: var(--text-min);
   }
 
   .topic-list {
@@ -1076,17 +1088,28 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .collection-card-grid {
+  .coll-card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .archive-hero__grid,
+  .topic-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .featured-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .featured-intro {
+    padding-top: 0;
+  }
+
   .page-hero__grid,
   .article-header__grid {
     grid-template-columns: 1fr;
   }
 
-  .archive-hero__ledger,
   .page-hero__facts {
     max-width: 30rem;
   }
@@ -1144,7 +1167,8 @@
   }
 
   .entry-grid,
-  .collection-card-grid,
+  .coll-card-grid,
+  .topic-card-grid,
   .topic-list {
     grid-template-columns: 1fr;
   }
@@ -1153,10 +1177,6 @@
     align-items: flex-start;
     flex-direction: column;
     gap: 0.4rem;
-  }
-
-  .collection-card-new {
-    min-height: 10rem;
   }
 
   .entry-card--compact {
@@ -1184,20 +1204,25 @@
   }
 
   .carousel__stage {
-    min-height: 22rem;
+    min-height: 24rem;
   }
 
   .carousel__card.is-prev {
-    transform: translateX(-16%) scale(0.92);
+    transform: translateX(-14%) scale(0.92);
   }
 
   .carousel__card.is-next {
-    transform: translateX(16%) scale(0.92);
+    transform: translateX(14%) scale(0.92);
   }
 
   .carousel__card.is-far-prev,
   .carousel__card.is-far-next {
     display: none;
+  }
+
+  .carousel__arrow {
+    width: 2.2rem;
+    height: 2.2rem;
   }
 
   .alpha-nav {

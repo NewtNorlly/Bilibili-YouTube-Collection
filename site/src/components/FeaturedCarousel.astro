@@ -13,12 +13,12 @@ const kindLabel = (kind: string) => (kind === "book" ? "书摘" : "文章");
 
 <div class="carousel" id="featured-carousel">
   <div class="carousel__stage">
+    <button class="carousel__arrow carousel__arrow--prev" aria-label="上一篇">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+
     {notes.map((note, index) => (
-      <div
-        class="carousel__card"
-        data-index={index}
-        style={`--card-index: ${index};`}
-      >
+      <div class="carousel__card" data-index={index} style={`--card-index: ${index};`}>
         <a class="carousel__cover" href={noteUrl(note.id)} tabindex="-1" aria-hidden="true">
           <Cover cover={note.cover} title={note.title} eager={index === 0} />
         </a>
@@ -32,23 +32,9 @@ const kindLabel = (kind: string) => (kind === "book" ? "书摘" : "文章");
         </div>
       </div>
     ))}
-  </div>
 
-  <div class="carousel__controls" aria-label="轮播控制">
-    <button class="carousel__btn carousel__btn--prev" aria-label="上一篇">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <div class="carousel__dots">
-      {notes.map((_, index) => (
-        <button
-          class="carousel__dot"
-          data-dot={index}
-          aria-label={`第 ${index + 1} 篇`}
-        ></button>
-      ))}
-    </div>
-    <button class="carousel__btn carousel__btn--next" aria-label="下一篇">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    <button class="carousel__arrow carousel__arrow--next" aria-label="下一篇">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
   </div>
 </div>
@@ -58,7 +44,6 @@ const kindLabel = (kind: string) => (kind === "book" ? "书摘" : "文章");
     root: HTMLElement;
     stage: HTMLElement;
     cards: HTMLElement[];
-    dots: HTMLElement[];
     prevBtn: HTMLElement;
     nextBtn: HTMLElement;
     current: number;
@@ -68,9 +53,8 @@ const kindLabel = (kind: string) => (kind === "book" ? "书摘" : "文章");
       this.root = root;
       this.stage = root.querySelector('.carousel__stage')!;
       this.cards = [...root.querySelectorAll<HTMLElement>('.carousel__card')];
-      this.dots = [...root.querySelectorAll<HTMLElement>('.carousel__dot')];
-      this.prevBtn = root.querySelector('.carousel__btn--prev')!;
-      this.nextBtn = root.querySelector('.carousel__btn--next')!;
+      this.prevBtn = root.querySelector('.carousel__arrow--prev')!;
+      this.nextBtn = root.querySelector('.carousel__arrow--next')!;
       this.current = 0;
       this.total = this.cards.length;
       if (this.total === 0) return;
@@ -89,15 +73,11 @@ const kindLabel = (kind: string) => (kind === "book" ? "书摘" : "文章");
         else if (offset < 0) card.classList.add('is-far-prev');
         else card.classList.add('is-far-next');
       });
-      this.dots.forEach((dot: HTMLElement, i: number) => {
-        dot.classList.toggle('is-active', i === this.current);
-      });
     }
 
     #bind() {
       this.prevBtn.addEventListener('click', () => this.#go(-1));
       this.nextBtn.addEventListener('click', () => this.#go(1));
-      this.dots.forEach((dot: HTMLElement, i: number) => dot.addEventListener('click', () => this.#goTo(i)));
 
       let startX = 0;
       let dragging = false;
@@ -142,11 +122,6 @@ const kindLabel = (kind: string) => (kind === "book" ? "书摘" : "文章");
 
     #go(direction: number) {
       this.current = (this.current + direction + this.total) % this.total;
-      this.#layout();
-    }
-
-    #goTo(index: number) {
-      this.current = index;
       this.#layout();
     }
   }

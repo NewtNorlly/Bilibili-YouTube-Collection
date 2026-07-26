@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FeaturedCarousel from "../components/FeaturedCarousel.astro";
+import Cover from "../components/Cover.astro";
 import { getCatalog, type CollectionSummary } from "../lib/catalog";
 import { collectionUrl, topicUrl } from "../lib/url";
 
@@ -65,6 +66,8 @@ const letterGroups: LetterGroup[] = sortedLetters.map((letter) => ({
   collections: groups.get(letter)!,
 }));
 
+const defaultLetter = "H";
+
 const kindLabel = (kind: string) => {
   if (kind === "library") return "书库";
   if (kind === "series") return "专题集";
@@ -73,57 +76,36 @@ const kindLabel = (kind: string) => {
 ---
 
 <BaseLayout>
-  <!-- ════════════════ 档案简介 ════════════════ -->
-  <section class="archive-hero">
-    <div class="shell archive-hero__grid">
-      <div>
-        <p class="eyebrow">Public text archive · 公开文本档案</p>
-        <h1>从影像，<br />到可检索的文字。</h1>
-        <div class="archive-hero__prose">
+  <!-- ════════════════ 档案选读 · 左文右卡 ════════════════ -->
+  <section class="home-section home-section--ruled" id="featured">
+    <div class="shell">
+      <header class="section-heading">
+        <h2 class="section-heading__title">档案选读</h2>
+        <p class="section-heading__index">FROM THE COLLECTION</p>
+      </header>
+
+      <div class="featured-layout">
+        <div class="featured-intro">
           <p>
-            按创作者与专题整理哔哩哔哩、YouTube 相关文本，也收藏独立的阅读笔记。
-            这里保留原有目录关系，让每一次摘录都有出处可循。
+            从影像，到可检索的文字。按创作者与专题整理哔哩哔哩、YouTube 相关文本，也收藏独立的阅读笔记。这里保留原有目录关系，让每一次摘录都有出处可循。
           </p>
           <p>
-            截至目前，已收录文本 <strong>{notes.length} 篇</strong>，
-            内容合集 <strong>{collections.length} 册</strong>，
-            独立专题 <strong>{topics.length} 个</strong>。
+            截至目前，已收录文本&nbsp;<strong>{notes.length} 篇</strong>，内容合集&nbsp;<strong>{collections.length} 册</strong>，独立专题&nbsp;<strong>{topics.length} 个</strong>。
           </p>
+        </div>
+
+        <div class="featured-stage">
+          {featuredNotes.length > 0 ? (
+            <FeaturedCarousel notes={featuredNotes} />
+          ) : (
+            <p class="empty-state">暂无选读内容。</p>
+          )}
         </div>
       </div>
-
-      <dl class="archive-hero__ledger" aria-label="档案统计">
-        <div>
-          <dt>收录文本</dt>
-          <dd>{notes.length}</dd>
-        </div>
-        <div>
-          <dt>内容合集</dt>
-          <dd>{collections.length}</dd>
-        </div>
-        <div>
-          <dt>独立专题</dt>
-          <dd>{topics.length}</dd>
-        </div>
-      </dl>
     </div>
   </section>
 
-  <!-- ════════════════ 档案选读 · 雁行轮播 ════════════════ -->
-  {featuredNotes.length > 0 && (
-    <section class="home-section home-section--ruled">
-      <div class="shell">
-        <header class="section-heading">
-          <h2 class="section-heading__title">档案选读</h2>
-          <p class="section-heading__index">FROM THE COLLECTION</p>
-        </header>
-
-        <FeaturedCarousel notes={featuredNotes} />
-      </div>
-    </section>
-  )}
-
-  <!-- ════════════════ 合集目录 · 首字母索引 ════════════════ -->
+  <!-- ════════════════ 合集目录 · 首字母索引 + 封面卡片 ════════════════ -->
   <section class="home-section home-section--ruled" id="collections">
     <div class="shell">
       <header class="section-heading">
@@ -133,25 +115,36 @@ const kindLabel = (kind: string) => {
 
       <nav class="alpha-nav" aria-label="按首字母筛选合集">
         {letterGroups.map((g) => (
-          <button class="alpha-nav__btn" data-letter={g.letter}>{g.letter}</button>
+          <button
+            class="alpha-nav__btn"
+            class:list={[{ "is-active": g.letter === defaultLetter }]}
+            data-letter={g.letter}
+          >
+            {g.letter}
+          </button>
         ))}
       </nav>
 
       {letterGroups.map((g) => (
-        <div class="alpha-group" data-letter={g.letter}>
+        <div
+          class="alpha-group"
+          class:list={[{ "is-hidden": g.letter !== defaultLetter }]}
+          data-letter={g.letter}
+        >
           <h3 class="alpha-group__heading">{g.letter}</h3>
-          <div class="collection-card-grid">
+          <div class="coll-card-grid">
             {g.collections.map((col) => (
-              <a class="collection-card-new" href={collectionUrl(col.id)}>
-                <span class="collection-card-new__kind">{kindLabel(col.kind)}</span>
-                <h4 class="collection-card-new__name">{col.name}</h4>
-                {col.description && (
-                  <p class="collection-card-new__desc">{col.description}</p>
-                )}
-                <p class="collection-card-new__counts">
-                  {col.noteCount} 篇
-                  {col.topicCount > 0 && ` · ${col.topicCount} 专题`}
-                </p>
+              <a class="coll-card" href={collectionUrl(col.id)}>
+                <div class="coll-card__cover">
+                  <Cover cover={col.cover} title={col.name} />
+                </div>
+                <div class="coll-card__body">
+                  <span class="coll-card__kind">{kindLabel(col.kind)}</span>
+                  <h4 class="coll-card__name">{col.name}</h4>
+                  <p class="coll-card__counts">
+                    {col.noteCount} 篇{col.topicCount > 0 && ` · ${col.topicCount} 专题`}
+                  </p>
+                </div>
               </a>
             ))}
           </div>
@@ -164,7 +157,7 @@ const kindLabel = (kind: string) => {
     </div>
   </section>
 
-  <!-- ════════════════ 专题索引 ════════════════ -->
+  <!-- ════════════════ 专题索引 · 封面卡片 ════════════════ -->
   {topics.length > 0 && (
     <section class="home-section home-section--ruled" id="topics">
       <div class="shell">
@@ -173,17 +166,20 @@ const kindLabel = (kind: string) => {
           <p class="section-heading__index">TOPICS / {String(topics.length).padStart(2, "0")}</p>
         </header>
 
-        <ol class="topic-list">
-          {topics.map((topic, index) => (
-            <li>
-              <a class="topic-link" href={topicUrl(topic.id)}>
-                <span class="topic-link__index">{String(index + 1).padStart(2, "0")}</span>
-                <span class="topic-link__name">{topic.name}</span>
-                <span class="topic-link__count">{topic.noteCount} 篇</span>
-              </a>
-            </li>
+        <div class="topic-card-grid">
+          {topics.map((topic) => (
+            <a class="topic-card" href={topicUrl(topic.id)}>
+              <div class="topic-card__cover">
+                <Cover cover={topic.cover} title={topic.name} />
+              </div>
+              <div class="topic-card__body">
+                <span class="topic-card__collection">{topic.collectionName}</span>
+                <h4 class="topic-card__name">{topic.name}</h4>
+                <p class="topic-card__counts">{topic.noteCount} 篇</p>
+              </div>
+            </a>
           ))}
-        </ol>
+        </div>
       </div>
     </section>
   )}
@@ -192,13 +188,13 @@ const kindLabel = (kind: string) => {
 <script>
   /* 首字母筛选 */
   const btns = document.querySelectorAll<HTMLButtonElement>('.alpha-nav__btn');
-  const groups = document.querySelectorAll<HTMLElement>('.alpha-group');
-  let activeLetter = '';
+  const alphaGroups = document.querySelectorAll<HTMLElement>('.alpha-group');
+  let activeLetter = 'H';
 
   function filter(letter: string) {
     activeLetter = letter;
     btns.forEach((b) => b.classList.toggle('is-active', b.dataset.letter === letter));
-    groups.forEach((g) => {
+    alphaGroups.forEach((g) => {
       g.classList.toggle('is-hidden', letter !== '' && g.dataset.letter !== letter);
     });
   }
