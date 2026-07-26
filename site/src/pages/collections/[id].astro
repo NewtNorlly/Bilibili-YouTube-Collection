@@ -7,7 +7,6 @@ import { topicUrl, withBase } from "../../lib/url";
 
 export async function getStaticPaths() {
   const catalog = await getCatalog();
-
   return catalog.collections.map((collection) => ({
     params: { id: collection.id },
   }));
@@ -15,10 +14,7 @@ export async function getStaticPaths() {
 
 const id = Astro.params.id ?? "";
 const collection = await getCollectionById(id);
-
-if (!collection) {
-  throw new Error(`Collection not found: ${id}`);
-}
+if (!collection) throw new Error(`Collection not found: ${id}`);
 
 const catalog = await getCatalog();
 const notes = collection.notes.filter((note) => !note.draft);
@@ -45,53 +41,23 @@ const kindLabel = collection.kind === "library"
     />
   </div>
 
-  <header class="page-hero">
-    <div class="shell page-hero__grid">
-      <div>
-        <p class="eyebrow">{kindLabel} · Collection</p>
-        <h1>{collection.name}</h1>
-        {collection.description && (
-          <p class="page-hero__description">{collection.description}</p>
-        )}
-      </div>
+  <div class="shell" style="padding-top: 2rem;">
+    <p class="coll-desc">
+      本合集，<strong>{collection.name}</strong>，共收录文本&nbsp;<strong>{notes.length} 篇</strong>{topics.length > 0 && `，专题&nbsp;${topics.length} 个`}，归档类型为{kindLabel}。
+    </p>
 
-      <ul class="page-hero__facts" aria-label="合集信息">
-        <li><span>文本</span><strong>{notes.length} 篇</strong></li>
-        <li><span>专题</span><strong>{topics.length} 个</strong></li>
-        <li><span>归档类型</span><strong>{kindLabel}</strong></li>
-      </ul>
-    </div>
-  </header>
+    {topics.length > 0 && (
+      <p class="coll-desc" style="margin-top: 0.4rem;">
+        专题：
+        {topics.map((t, i) => (
+          <><a href={topicUrl(t.id)}>{t.name}</a>{i < topics.length - 1 ? " · " : ""}</>
+        ))}
+      </p>
+    )}
+  </div>
 
-  {topics.length > 0 && (
-    <section class="listing-section">
-      <div class="shell">
-        <header class="section-heading">
-          <h2 class="section-heading__title">专题</h2>
-          <p class="section-heading__index">TOPICS / {String(topics.length).padStart(2, "0")}</p>
-        </header>
-        <ol class="topic-list">
-          {topics.map((topic, index) => (
-            <li>
-              <a class="topic-link" href={topicUrl(topic.id)}>
-                <span class="topic-link__index">{String(index + 1).padStart(2, "0")}</span>
-                <span class="topic-link__name">{topic.name}</span>
-                <span class="topic-link__count">{topic.noteCount} 篇</span>
-              </a>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  )}
-
-  <section class="listing-section">
+  <section class="listing-section" style="padding-block-start: 1.5rem;">
     <div class="shell">
-      <header class="section-heading">
-        <h2 class="section-heading__title">全部文本</h2>
-        <p class="section-heading__index">ENTRIES / {String(notes.length).padStart(2, "0")}</p>
-      </header>
-
       {notes.length > 0 ? (
         <div class="entry-grid">
           {notes.map((note) => <EntryCard note={note} />)}
@@ -102,3 +68,22 @@ const kindLabel = collection.kind === "library"
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .coll-desc {
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: var(--text-lead);
+    line-height: 1.85;
+  }
+  .coll-desc strong {
+    font-weight: 700;
+  }
+  .coll-desc a {
+    color: var(--vermillion-dark);
+    text-decoration: none;
+  }
+  .coll-desc a:hover {
+    text-decoration: underline;
+  }
+</style>

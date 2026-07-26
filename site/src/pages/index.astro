@@ -10,13 +10,8 @@ const notes = catalog.notes.filter((note) => !note.draft);
 const collections = catalog.collections;
 const topics = catalog.topics;
 
-/* 档案选读：每个合集取一篇代表作 */
-const featuredNotes = collections
-  .flatMap((col) => {
-    const note = notes.find((item) => item.collectionId === col.id);
-    return note ? [note] : [];
-  })
-  .slice(0, 12);
+/* 档案选读：所有已发布文章，客户端随机抽取 10 篇 */
+const allPublished = notes;
 
 /* ---------- 首字母索引 ---------- */
 function pinyinFirst(c: string): string {
@@ -38,6 +33,7 @@ function pinyinFirst(c: string): string {
     小: "X", 心: "X", 星: "X", 夏: "X",
     要: "Y", 一: "Y", 英: "Y", 硬: "Y", 于: "Y", 元: "Y", 原: "Y", 源: "Y",
     张: "Z", 周: "Z", 志: "Z", 最: "Z",
+    日: "R",
   };
   return map[c] ?? (/^[a-zA-Z]$/.test(c) ? c.toUpperCase() : "#");
 }
@@ -95,8 +91,8 @@ const kindLabel = (kind: string) => {
         </div>
 
         <div class="featured-stage">
-          {featuredNotes.length > 0 ? (
-            <FeaturedCarousel notes={featuredNotes} />
+          {allPublished.length > 0 ? (
+            <FeaturedCarousel notes={allPublished} />
           ) : (
             <p class="empty-state">暂无选读内容。</p>
           )}

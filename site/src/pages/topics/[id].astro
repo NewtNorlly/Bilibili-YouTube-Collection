@@ -7,18 +7,12 @@ import { collectionUrl, withBase } from "../../lib/url";
 
 export async function getStaticPaths() {
   const catalog = await getCatalog();
-
-  return catalog.topics.map((topic) => ({
-    params: { id: topic.id },
-  }));
+  return catalog.topics.map((topic) => ({ params: { id: topic.id } }));
 }
 
 const id = Astro.params.id ?? "";
 const topic = await getTopicById(id);
-
-if (!topic) {
-  throw new Error(`Topic not found: ${id}`);
-}
+if (!topic) throw new Error(`Topic not found: ${id}`);
 
 const notes = topic.notes.filter((note) => !note.draft);
 ---
@@ -38,28 +32,14 @@ const notes = topic.notes.filter((note) => !note.draft);
     />
   </div>
 
-  <header class="page-hero">
-    <div class="shell page-hero__grid">
-      <div>
-        <p class="eyebrow">专题 · Topic</p>
-        <h1>{topic.name}</h1>
-      </div>
+  <div class="shell" style="padding-top: 2rem;">
+    <p class="coll-desc">
+      本专题，<strong>{topic.name}</strong>，隶属合集「<a href={collectionUrl(topic.collectionId)}>{topic.collectionName}</a>」，共收录文本&nbsp;<strong>{notes.length} 篇</strong>。
+    </p>
+  </div>
 
-      <ul class="page-hero__facts" aria-label="专题信息">
-        <li><span>所属合集</span><strong>{topic.collectionName}</strong></li>
-        <li><span>收录文本</span><strong>{notes.length} 篇</strong></li>
-        <li><span>归档类型</span><strong>独立专题</strong></li>
-      </ul>
-    </div>
-  </header>
-
-  <section class="listing-section">
+  <section class="listing-section" style="padding-block-start: 1.5rem;">
     <div class="shell">
-      <header class="section-heading">
-        <h2 class="section-heading__title">专题文本</h2>
-        <p class="section-heading__index">ENTRIES / {String(notes.length).padStart(2, "0")}</p>
-      </header>
-
       {notes.length > 0 ? (
         <div class="entry-grid">
           {notes.map((note) => <EntryCard note={note} showCollection />)}
@@ -70,3 +50,22 @@ const notes = topic.notes.filter((note) => !note.draft);
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .coll-desc {
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: var(--text-lead);
+    line-height: 1.85;
+  }
+  .coll-desc strong {
+    font-weight: 700;
+  }
+  .coll-desc a {
+    color: var(--vermillion-dark);
+    text-decoration: none;
+  }
+  .coll-desc a:hover {
+    text-decoration: underline;
+  }
+</style>

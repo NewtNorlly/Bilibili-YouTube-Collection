@@ -52,7 +52,15 @@ const kindLabel = (kind: string) => (kind === "book" ? "书摘" : "文章");
     constructor(root: HTMLElement) {
       this.root = root;
       this.stage = root.querySelector('.carousel__stage')!;
-      this.cards = [...root.querySelectorAll<HTMLElement>('.carousel__card')];
+      const allCards = [...root.querySelectorAll<HTMLElement>('.carousel__card')];
+
+      /* 随机抽取 10 篇，每次刷新不同 */
+      const shuffled = allCards.sort(() => Math.random() - 0.5);
+      this.cards = shuffled.slice(0, 10);
+      allCards.forEach((c) => {
+        if (!this.cards.includes(c)) c.style.display = 'none';
+      });
+
       this.prevBtn = root.querySelector('.carousel__arrow--prev')!;
       this.nextBtn = root.querySelector('.carousel__arrow--next')!;
       this.current = 0;
