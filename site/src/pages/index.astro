@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import EntryCard from "../components/EntryCard.astro";
-import { getCatalog } from "../lib/catalog";
+import FeaturedCarousel from "../components/FeaturedCarousel.astro";
+import { getCatalog, type CollectionSummary } from "../lib/catalog";
 import { collectionUrl, topicUrl } from "../lib/url";
 
 const catalog = await getCatalog();
@@ -9,14 +9,63 @@ const notes = catalog.notes.filter((note) => !note.draft);
 const collections = catalog.collections;
 const topics = catalog.topics;
 
+/* 档案选读：每个合集取一篇代表作 */
 const featuredNotes = collections
-  .flatMap((collection) => {
-    const note = notes.find((item) => item.collectionId === collection.id);
+  .flatMap((col) => {
+    const note = notes.find((item) => item.collectionId === col.id);
     return note ? [note] : [];
   })
-  .slice(0, 9);
+  .slice(0, 12);
 
-const collectionKindLabel = (kind: string) => {
+/* ---------- 首字母索引 ---------- */
+function pinyinFirst(c: string): string {
+  const map: Record<string, string> = {
+    啊: "A", 爱: "A", 安: "A",
+    本: "B", 哔: "B", 渤: "B", 捕: "B", 北: "B",
+    差: "C", 超: "C",
+    盗: "D", 毒: "D",
+    二: "E",
+    耿: "G",
+    何: "H", 河: "H", 黑: "H",
+    加: "J", 江: "J", 具: "J",
+    卡: "K",
+    蓝: "L", 浪: "L", 历: "L", 聊: "L",
+    麦: "M", 盲: "M", 木: "M",
+    青: "Q", 棋: "Q",
+    三: "S", 杉: "S", 十: "S", 孙: "S",
+    王: "W", 威: "W", 微: "W", 唯: "W", 文: "W", 我: "W", 乌: "W",
+    小: "X", 心: "X", 星: "X", 夏: "X",
+    要: "Y", 一: "Y", 英: "Y", 硬: "Y", 于: "Y", 元: "Y", 原: "Y", 源: "Y",
+    张: "Z", 周: "Z", 志: "Z", 最: "Z",
+  };
+  return map[c] ?? (/^[a-zA-Z]$/.test(c) ? c.toUpperCase() : "#");
+}
+
+interface LetterGroup {
+  letter: string;
+  collections: CollectionSummary[];
+}
+
+const groups = new Map<string, CollectionSummary[]>();
+for (const col of collections) {
+  const first = [...col.name][0] ?? "#";
+  const letter = pinyinFirst(first);
+  if (!groups.has(letter)) groups.set(letter, []);
+  groups.get(letter)!.push(col);
+}
+
+const sortedLetters = [...groups.keys()].sort((a, b) => {
+  if (a === "#") return 1;
+  if (b === "#") return -1;
+  return a.localeCompare(b);
+});
+
+const letterGroups: LetterGroup[] = sortedLetters.map((letter) => ({
+  letter,
+  collections: groups.get(letter)!,
+}));
+
+const kindLabel = (kind: string) => {
   if (kind === "library") return "书库";
   if (kind === "series") return "专题集";
   return "创作者";
@@ -24,15 +73,23 @@ const collectionKindLabel = (kind: string) => {
 ---
 
 <BaseLayout>
+  <!-- ════════════════ 档案简介 ════════════════ -->
   <section class="archive-hero">
     <div class="shell archive-hero__grid">
       <div>
         <p class="eyebrow">Public text archive · 公开文本档案</p>
         <h1>从影像，<br />到可检索的文字。</h1>
-        <p class="archive-hero__lead">
-          按创作者与专题整理哔哩哔哩、YouTube 相关文本，也收藏独立的阅读笔记。
-          这里保留原有目录关系，让每一次摘录都有出处可循。
-        </p>
+        <div class="archive-hero__prose">
+          <p>
+            按创作者与专题整理哔哩哔哩、YouTube 相关文本，也收藏独立的阅读笔记。
+            这里保留原有目录关系，让每一次摘录都有出处可循。
+          </p>
+          <p>
+            截至目前，已收录文本 <strong>{notes.length} 篇</strong>，
+            内容合集 <strong>{collections.length} 册</strong>，
+            独立专题 <strong>{topics.length} 个</strong>。
+          </p>
+        </div>
       </div>
 
       <dl class="archive-hero__ledger" aria-label="档案统计">
@@ -52,6 +109,21 @@ const collectionKindLabel = (kind: string) => {
     </div>
   </section>
 
+  <!-- ════════════════ 档案选读 · 雁行轮播 ════════════════ -->
+  {featuredNotes.length > 0 && (
+    <section class="home-section home-section--ruled">
+      <div class="shell">
+        <header class="section-heading">
+          <h2 class="section-heading__title">档案选读</h2>
+          <p class="section-heading__index">FROM THE COLLECTION</p>
+        </header>
+
+        <FeaturedCarousel notes={featuredNotes} />
+      </div>
+    </section>
+  )}
+
+  <!-- ════════════════ 合集目录 · 首字母索引 ════════════════ -->
   <section class="home-section home-section--ruled" id="collections">
     <div class="shell">
       <header class="section-heading">
@@ -59,30 +131,40 @@ const collectionKindLabel = (kind: string) => {
         <p class="section-heading__index">COLLECTIONS / {String(collections.length).padStart(2, "0")}</p>
       </header>
 
-      {collections.length > 0 ? (
-        <div class="collection-grid">
-          {collections.map((collection, index) => (
-            <a class="collection-card" href={collectionUrl(collection.id)}>
-              <p class="collection-card__number">
-                {String(index + 1).padStart(2, "0")} · {collectionKindLabel(collection.kind)}
-              </p>
-              <h3>{collection.name}</h3>
-              {collection.description && (
-                <p class="collection-card__description">{collection.description}</p>
-              )}
-              <p class="collection-card__counts">
-                {collection.noteCount} 篇文本
-                {collection.topicCount > 0 && ` · ${collection.topicCount} 个专题`}
-              </p>
-            </a>
-          ))}
+      <nav class="alpha-nav" aria-label="按首字母筛选合集">
+        {letterGroups.map((g) => (
+          <button class="alpha-nav__btn" data-letter={g.letter}>{g.letter}</button>
+        ))}
+      </nav>
+
+      {letterGroups.map((g) => (
+        <div class="alpha-group" data-letter={g.letter}>
+          <h3 class="alpha-group__heading">{g.letter}</h3>
+          <div class="collection-card-grid">
+            {g.collections.map((col) => (
+              <a class="collection-card-new" href={collectionUrl(col.id)}>
+                <span class="collection-card-new__kind">{kindLabel(col.kind)}</span>
+                <h4 class="collection-card-new__name">{col.name}</h4>
+                {col.description && (
+                  <p class="collection-card-new__desc">{col.description}</p>
+                )}
+                <p class="collection-card-new__counts">
+                  {col.noteCount} 篇
+                  {col.topicCount > 0 && ` · ${col.topicCount} 专题`}
+                </p>
+              </a>
+            ))}
+          </div>
         </div>
-      ) : (
+      ))}
+
+      {collections.length === 0 && (
         <p class="empty-state">仓库中暂时没有可发布的合集。</p>
       )}
     </div>
   </section>
 
+  <!-- ════════════════ 专题索引 ════════════════ -->
   {topics.length > 0 && (
     <section class="home-section home-section--ruled" id="topics">
       <div class="shell">
@@ -105,19 +187,26 @@ const collectionKindLabel = (kind: string) => {
       </div>
     </section>
   )}
-
-  {featuredNotes.length > 0 && (
-    <section class="home-section home-section--ruled">
-      <div class="shell">
-        <header class="section-heading">
-          <h2 class="section-heading__title">档案选读</h2>
-          <p class="section-heading__index">FROM THE COLLECTION</p>
-        </header>
-
-        <div class="entry-grid">
-          {featuredNotes.map((note) => <EntryCard note={note} showCollection />)}
-        </div>
-      </div>
-    </section>
-  )}
 </BaseLayout>
+
+<script>
+  /* 首字母筛选 */
+  const btns = document.querySelectorAll<HTMLButtonElement>('.alpha-nav__btn');
+  const groups = document.querySelectorAll<HTMLElement>('.alpha-group');
+  let activeLetter = '';
+
+  function filter(letter: string) {
+    activeLetter = letter;
+    btns.forEach((b) => b.classList.toggle('is-active', b.dataset.letter === letter));
+    groups.forEach((g) => {
+      g.classList.toggle('is-hidden', letter !== '' && g.dataset.letter !== letter);
+    });
+  }
+
+  btns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const letter = btn.dataset.letter!;
+      filter(activeLetter === letter ? '' : letter);
+    });
+  });
+</script>
