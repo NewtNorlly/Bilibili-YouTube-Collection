@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FeaturedCarousel from "../components/FeaturedCarousel.astro";
 import Cover from "../components/Cover.astro";
@@ -132,7 +132,7 @@ const kindLabel = (kind: string) => {
             {g.collections.map((col) => (
               <a class="coll-card" href={collectionUrl(col.id)}>
                 <div class="coll-card__cover">
-                  <Cover cover={col.cover} title={col.name} />
+                  <Cover cover={col.cover} title={col.name} thumbnail />
                 </div>
                 <div class="coll-card__body">
                   <span class="coll-card__kind">{kindLabel(col.kind)}</span>
@@ -166,7 +166,7 @@ const kindLabel = (kind: string) => {
           {topics.map((topic) => (
             <a class="topic-card" href={topicUrl(topic.id)}>
               <div class="topic-card__cover">
-                <Cover cover={topic.cover} title={topic.name} />
+                <Cover cover={topic.cover} title={topic.name} thumbnail />
               </div>
               <div class="topic-card__body">
                 <span class="topic-card__collection">{topic.collectionName}</span>

@@ -5,6 +5,7 @@ interface Props {
   cover?: CoverData;
   title: string;
   eager?: boolean;
+  thumbnail?: boolean;
   class?: string;
 }
 
@@ -12,6 +13,7 @@ const {
   cover,
   title,
   eager = false,
+  thumbnail = false,
   class: className = "",
 } = Astro.props;
 
@@ -26,7 +28,7 @@ const sizes = eager
 <figure class:list={["cover", className, { "cover--empty": !cover }]}>
   {cover ? (
     <img
-      src={cover.src}
+      src={thumbnail && cover.thumbnailSrc ? cover.thumbnailSrc : cover.src}
       srcset={cover.srcSet}
       sizes={cover.srcSet ? sizes : undefined}
       alt={cover.alt || `${title}封面`}
