@@ -16,6 +16,7 @@ const collator = new Intl.Collator('zh-CN-u-co-pinyin', {
 export interface Cover {
   src: string;
   srcSet?: string;
+  thumbnailSrc?: string;
   alt: string;
   positionX?: number;
   positionY?: number;
@@ -171,17 +172,23 @@ function resolveAssetPath(sourcePath: string, assetPath: string): string | undef
   return undefined;
 }
 
-function localCoverMedia(localPath: string): Pick<Cover, 'src' | 'srcSet'> {
+function localCoverMedia(localPath: string): Pick<Cover, 'src' | 'srcSet' | 'thumbnailSrc'> {
   const src = mediaUrl(localPath);
-  if (!/-960\.webp$/i.test(localPath)) return { src };
+  const ext = localPath.match(/\.\w+$/)?.[0] ?? '';
+  const thumbPath = localPath.replace(new RegExp(ext.replace('.','\\.')+'$'), `_thumb${ext}`);
+  const thumbAbs = path.resolve(repositoryRoot, ...thumbPath.split('/'));
+  const thumbnailSrc = existsSync(thumbAbs) ? mediaUrl(thumbPath) : undefined;
+
+  if (!/-960\.webp$/i.test(localPath)) return { src, thumbnailSrc };
 
   const smallPath = localPath.replace(/-960\.webp$/i, '-480.webp');
   const smallAbsolutePath = path.resolve(repositoryRoot, ...smallPath.split('/'));
-  if (!existsSync(smallAbsolutePath)) return { src };
+  if (!existsSync(smallAbsolutePath)) return { src, thumbnailSrc };
 
   return {
     src,
     srcSet: `${mediaUrl(smallPath)} 480w, ${src} 960w`,
+    thumbnailSrc,
   };
 }
 
