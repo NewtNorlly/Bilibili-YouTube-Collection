@@ -15,7 +15,7 @@ const kindLabel = note.kind === "book" ? "书摘" : "文章";
 
 <article class:list={["entry-card", { "entry-card--compact": compact }]}>
   <a class="entry-card__cover-link" href={noteUrl(note.id)} tabindex="-1" aria-hidden="true">
-    <Cover cover={note.cover} title={note.title} thumbnail />
+    <Cover cover={note.cover} title={note.title} />
   </a>
   <div class="entry-card__body">
     <div class="entry-card__meta">
