@@ -85,6 +85,7 @@
 }
 
 .article-aside a {
+  position: relative;
   display: block;
   padding-block: 0.65rem;
   color: var(--ink-soft);
@@ -92,11 +93,45 @@
   font-size: var(--text-min);
   line-height: 1.55;
   text-decoration: none;
+  transition: color var(--duration-quick) ease;
+}
+
+.article-aside a::before {
+  position: absolute;
+  top: 0.55rem;
+  bottom: 0.55rem;
+  left: -0.75rem;
+  width: 2px;
+  content: "";
+  opacity: 0;
+  transform: scaleY(0.45);
+  background: var(--vermillion);
+  transition:
+    opacity var(--duration-quick) ease,
+    transform var(--duration-popover) var(--ease-in-out);
+}
+
+.article-aside a.is-active,
+.article-aside a[aria-current="location"] {
+  color: var(--ink);
+}
+
+.article-aside a.is-active::before,
+.article-aside a[aria-current="location"]::before {
+  opacity: 1;
+  transform: scaleY(1);
 }
 
 .article-aside li[data-depth="3"] a {
   padding-left: 0.8rem;
   color: var(--ink-faint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-aside a::before {
+    transform: none;
+    transition: opacity var(--duration-quick) ease;
+  }
 }
 
 .prose {

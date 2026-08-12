@@ -17,6 +17,8 @@ concurrency:
 
 env:
   ASTRO_TELEMETRY_DISABLED: 1
+  SITE_URL: https://20260718.xyz
+  SITE_BASE: /
 
 jobs:
   build:

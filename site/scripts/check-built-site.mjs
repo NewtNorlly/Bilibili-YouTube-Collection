@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const siteDirectory = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const outputDirectory = path.join(siteDirectory, 'dist');
-const repositoryBase = '/Bilibili-YouTube-Collection/';
+const repositoryBase = `/${process.env.SITE_BASE ?? ''}`.replace(/\/+/g, '/').replace(/\/+$/, '/');
 const localOrigin = 'https://local.invalid';
 const htmlFiles = [];
 

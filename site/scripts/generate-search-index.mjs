@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const siteDirectory = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const repositoryRoot = path.resolve(siteDirectory, "..");
 const outputPath = path.join(siteDirectory, "public", "search-index.json");
+const siteBase = `/${process.env.SITE_BASE ?? ''}`.replace(/\/+/g, '/').replace(/\/+$/, '');
 
 const skippedDirectories = new Set([
   ".git",
@@ -88,7 +89,7 @@ async function walk(directory) {
     const pathParts = relativePath.split("/");
     const collection = pathParts[0] || "未分类";
     const id = stableId(title, relativePath);
-    const url = `/Bilibili-YouTube-Collection/notes/${encodeURIComponent(id)}/`;
+    const url = `${siteBase}/notes/${encodeURIComponent(id)}/`;
 
     index.push({ title, collection, url });
   }

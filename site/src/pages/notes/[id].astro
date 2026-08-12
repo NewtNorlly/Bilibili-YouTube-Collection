@@ -112,3 +112,45 @@ const sourceLabel = note.kind === "book" ? "查看原始来源" : "观看原视�
     <a href={collectionUrl(note.collectionId)}>返回「{note.collectionName}」</a>
   </div>
 </BaseLayout>
+
+<script>
+  const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.article-aside a[href^="#"]')];
+  const headings = tocLinks
+    .map((link) => {
+      const id = decodeURIComponent(link.hash.slice(1));
+      const heading = document.getElementById(id);
+      return heading ? { link, heading } : null;
+    })
+    .filter((item): item is { link: HTMLAnchorElement; heading: HTMLElement } => Boolean(item));
+
+  function setActiveHeading(id: string) {
+    headings.forEach(({ link, heading }) => {
+      const active = heading.id === id;
+      link.classList.toggle('is-active', active);
+      if (active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  }
+
+  if (headings.length > 0) {
+    const initialHeading = headings.find(({ heading }) => `#${encodeURIComponent(heading.id)}` === location.hash);
+    setActiveHeading((initialHeading ?? headings[0]).heading.id);
+
+    headings.forEach(({ link, heading }) => {
+      link.addEventListener('click', () => setActiveHeading(heading.id));
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        const first = visible[0]?.target as HTMLElement | undefined;
+        if (first) setActiveHeading(first.id);
+      },
+      { rootMargin: '-12% 0px -72% 0px' },
+    );
+
+    headings.forEach(({ heading }) => observer.observe(heading));
+  }
+</script>

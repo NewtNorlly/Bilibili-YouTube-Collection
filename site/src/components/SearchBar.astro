@@ -1,5 +1,17 @@
-<div class="search-bar" id="site-search">
-  <button class="search-bar__toggle" aria-label="打开搜索" id="search-toggle">
+---
+import { withBase } from '../lib/url';
+
+const searchIndexUrl = withBase('search-index.json');
+---
+
+<div class="search-bar" id="site-search" data-index-url={searchIndexUrl}>
+  <button
+    class="search-bar__toggle"
+    aria-label="打开搜索"
+    aria-expanded="false"
+    aria-controls="search-panel"
+    id="search-toggle"
+  >
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="11" cy="11" r="8"/>
       <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -46,28 +58,30 @@
       this.toggle = document.getElementById('search-toggle')!;
       this.close = document.getElementById('search-close')!;
 
-      this.toggle.addEventListener('click', () => this.open());
-      this.close.addEventListener('click', () => this.closePanel());
+      this.toggle.addEventListener('click', () => this.open(false));
+      this.close.addEventListener('click', () => this.closePanel(false));
       this.input.addEventListener('input', () => this.filter());
 
       document.addEventListener('keydown', (e: KeyboardEvent) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
           e.preventDefault();
-          this.open();
+          this.open(true);
         }
-        if (e.key === 'Escape') this.closePanel();
+        if (e.key === 'Escape') this.closePanel(true);
       });
 
       document.addEventListener('click', (e: MouseEvent) => {
         const target = e.target as HTMLElement;
         if (!this.panel.contains(target) && target !== this.toggle && !this.toggle.contains(target)) {
-          this.closePanel();
+          this.closePanel(false);
         }
       });
     }
 
-    async open() {
+    async open(instant = false) {
+      this.#setInstant(instant);
       this.panel.classList.add('is-open');
+      this.toggle.setAttribute('aria-expanded', 'true');
       this.input.focus();
       if (!this.loaded) {
         await this.fetchIndex();
@@ -75,15 +89,26 @@
       }
     }
 
-    closePanel() {
+    closePanel(instant = false) {
+      this.#setInstant(instant);
       this.panel.classList.remove('is-open');
+      this.toggle.setAttribute('aria-expanded', 'false');
       this.input.value = '';
       this.results.innerHTML = '';
+      if (instant) this.toggle.focus();
+    }
+
+    #setInstant(instant: boolean) {
+      this.panel.classList.toggle('is-instant', instant);
+      if (instant) {
+        requestAnimationFrame(() => this.panel.classList.remove('is-instant'));
+      }
     }
 
     async fetchIndex() {
       try {
-        const res = await fetch('/Bilibili-YouTube-Collection/search-index.json');
+        const searchRoot = document.getElementById('site-search');
+        const res = await fetch(searchRoot?.dataset.indexUrl ?? '/search-index.json');
         this.data = await res.json();
       } catch {
         this.data = [];
@@ -137,13 +162,15 @@
     background: transparent;
     color: var(--ink-soft);
     cursor: pointer;
-    transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+    transition:
+      background-color var(--duration-press) ease,
+      color var(--duration-press) ease,
+      border-color var(--duration-press) ease,
+      transform var(--duration-press) var(--ease-out);
   }
 
-  .search-bar__toggle:hover {
-    background: var(--ink);
-    border-color: var(--ink);
-    color: var(--sheet);
+  .search-bar__toggle:active {
+    transform: scale(0.97);
   }
 
   .search-bar__panel {
@@ -157,15 +184,22 @@
     background: var(--sheet);
     box-shadow: 0 16px 48px rgb(67 50 30 / 16%);
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-6px) scale(0.97);
+    transform-origin: top right;
     pointer-events: none;
-    transition: opacity 220ms ease, transform 220ms ease;
+    transition:
+      opacity var(--duration-popover) var(--ease-out),
+      transform var(--duration-popover) var(--ease-out);
   }
 
   .search-bar__panel.is-open {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
+  }
+
+  .search-bar__panel.is-instant {
+    transition: none;
   }
 
   .search-bar__input-row {
@@ -207,11 +241,14 @@
     color: var(--ink-faint);
     cursor: pointer;
     flex-shrink: 0;
+    transition:
+      background-color var(--duration-quick) ease,
+      color var(--duration-quick) ease,
+      transform var(--duration-press) var(--ease-out);
   }
 
-  .search-bar__close:hover {
-    background: var(--sheet-muted);
-    color: var(--ink);
+  .search-bar__close:active {
+    transform: scale(0.97);
   }
 
   .search-bar__results {
@@ -219,23 +256,19 @@
     overflow-y: auto;
   }
 
-  .search-bar__result {
+  :global(.search-bar__result) {
     display: block;
     padding: 0.7rem 1rem;
     text-decoration: none;
-    transition: background-color 140ms ease;
+    transition: background-color var(--duration-quick) ease;
     border-bottom: 1px solid var(--line-soft);
   }
 
-  .search-bar__result:last-child {
+  :global(.search-bar__result:last-child) {
     border-bottom: 0;
   }
 
-  .search-bar__result:hover {
-    background: var(--sheet-muted);
-  }
-
-  .search-bar__result-title {
+  :global(.search-bar__result-title) {
     display: block;
     color: var(--ink);
     font-family: var(--font-serif);
@@ -243,22 +276,44 @@
     line-height: 1.5;
   }
 
-  .search-bar__result-title mark {
+  :global(.search-bar__result-title mark) {
     background: rgb(164 59 40 / 15%);
     color: var(--vermillion-dark);
   }
 
-  .search-bar__result-collection {
+  :global(.search-bar__result-collection) {
     display: block;
     margin-top: 0.2rem;
     color: var(--ink-faint);
     font-size: var(--text-min);
   }
 
-  .search-bar__empty {
+  :global(.search-bar__empty) {
     padding: 1.5rem 1rem;
     color: var(--ink-faint);
     font-size: var(--text-min);
     text-align: center;
+  }
+
+  @media (max-width: 44rem) {
+    .search-bar__panel {
+      right: auto;
+      left: 0;
+      transform-origin: top left;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .search-bar__toggle:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--sheet);
+    }
+
+    .search-bar__close:hover,
+    :global(.search-bar__result:hover) {
+      background: var(--sheet-muted);
+      color: var(--ink);
+    }
   }
 </style>

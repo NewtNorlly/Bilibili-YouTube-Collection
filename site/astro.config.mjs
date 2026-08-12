@@ -6,11 +6,12 @@ import rehypeSlug from 'rehype-slug';
 
 import { remarkObsidian } from './src/plugins/remark-obsidian.mjs';
 
-const repositoryBase = '/Bilibili-YouTube-Collection';
+const siteUrl = process.env.SITE_URL ?? 'https://20260718.xyz';
+const siteBase = process.env.SITE_BASE ?? '/';
 
 export default defineConfig({
-  site: 'https://newtnorlly.github.io',
-  base: repositoryBase,
+  site: siteUrl,
+  base: siteBase,
   output: 'static',
   trailingSlash: 'always',
   build: {
@@ -19,7 +20,7 @@ export default defineConfig({
   integrations: [sitemap()],
   markdown: {
     processor: unified({
-      remarkPlugins: [[remarkObsidian, { base: repositoryBase }]],
+      remarkPlugins: [[remarkObsidian, { base: siteBase }]],
       rehypePlugins: [
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'append' }],

@@ -112,9 +112,11 @@ const kindLabel = (kind: string) => {
       <nav class="alpha-nav" aria-label="按首字母筛选合集">
         {letterGroups.map((g) => (
           <button
+            type="button"
             class="alpha-nav__btn"
             class:list={[{ "is-active": g.letter === defaultLetter }]}
             data-letter={g.letter}
+            aria-pressed={g.letter === defaultLetter}
           >
             {g.letter}
           </button>
@@ -186,13 +188,46 @@ const kindLabel = (kind: string) => {
   const btns = document.querySelectorAll<HTMLButtonElement>('.alpha-nav__btn');
   const alphaGroups = document.querySelectorAll<HTMLElement>('.alpha-group');
   let activeLetter = 'H';
+  let transitionId = 0;
 
   function filter(letter: string) {
+    const currentId = ++transitionId;
+    const visibleGroups = [...alphaGroups].filter((group) => !group.classList.contains('is-hidden'));
+    const targetGroups = [...alphaGroups].filter((group) => letter === '' || group.dataset.letter === letter);
+
     activeLetter = letter;
-    btns.forEach((b) => b.classList.toggle('is-active', b.dataset.letter === letter));
-    alphaGroups.forEach((g) => {
-      g.classList.toggle('is-hidden', letter !== '' && g.dataset.letter !== letter);
+    btns.forEach((b) => {
+      const isActive = b.dataset.letter === letter;
+      b.classList.toggle('is-active', isActive);
+      b.setAttribute('aria-pressed', String(isActive));
     });
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      alphaGroups.forEach((group) => {
+        group.classList.toggle('is-hidden', !targetGroups.includes(group));
+      });
+      return;
+    }
+
+    visibleGroups.forEach((group) => group.classList.add('is-exiting'));
+
+    window.setTimeout(() => {
+      if (currentId !== transitionId) return;
+
+      alphaGroups.forEach((group) => {
+        const shouldShow = targetGroups.includes(group);
+        group.classList.toggle('is-hidden', !shouldShow);
+        group.classList.remove('is-exiting');
+        group.classList.toggle('is-entering', shouldShow);
+      });
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (currentId !== transitionId) return;
+          targetGroups.forEach((group) => group.classList.remove('is-entering'));
+        });
+      });
+    }, 120);
   }
 
   btns.forEach((btn) => {
