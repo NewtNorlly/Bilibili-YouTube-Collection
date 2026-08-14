@@ -75,7 +75,7 @@ Bilibili-Youtube-Collection/
 
 一、分类原则
 
-按UP 主 / 频道核心分类：每个文件夹对应一个特定 UP 主或频道，确保内容归属清晰
+按UP主 / 频道核心分类：每个文件夹对应一个特定 UP 主或频道，确保内容归属清晰
 
 按内容主题辅助补充：同一主题下的跨 UP 主内容，可新增主题类文件夹统一收纳
 
@@ -171,4 +171,4 @@ git push
 ```
 
 ## ✉️ 版权与联系方式
-<div style="background-color: #ffeef2; padding: 20px; border-radius: 8px; text-align: center; margin-top: 30px; border: 1px solid #d2d4d5;">© 2026 NewtNolly<br><br>📧 联系邮箱：newtnolly@outlook.com<br>📄 许可协议： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: #fb7299; text-decoration: none; font-weight: 600;"> CC BY-NC-SA 4.0（非商用共享） </a><br>⚠️ 说明：本仓库为个人内容收藏整理，仅用于个人学习与查阅，严禁用于商业用途。</div>
+<div style="background-color: #ffeef2; padding: 20px; border-radius: 8px; text-align: center; margin-top: 30px; border: 1px solid #d2d4d5;">© 2026 NewtNorlly<br><br>📧 联系邮箱：newtnolly@outlook.com<br>📄 许可协议： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: #fb7299; text-decoration: none; font-weight: 600;"> CC BY-NC-SA 4.0（非商用共享） </a><br>⚠️ 说明：本仓库为个人内容收藏整理，仅用于个人学习与查阅，严禁用于商业用途。</div>
