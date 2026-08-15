@@ -10,7 +10,7 @@ interface Props {
 }
 
 const { note, showCollection = false, compact = false } = Astro.props;
-const kindLabel = note.kind === "book" ? "书摘" : "文章";
+const kindLabel = note.kind === "book" ? "书摘" : note.kind === "stats" ? "阅读统计" : "文章";
 ---
 
 <article class:list={["entry-card", { "entry-card--compact": compact }]}>
@@ -25,6 +25,13 @@ const kindLabel = note.kind === "book" ? "书摘" : "文章";
       )}
     </div>
     <h3><a href={noteUrl(note.id)}>{note.title}</a></h3>
+    {note.weread && (
+      <p class="entry-card__reading-meta">
+        {[note.weread.author, note.weread.progress, note.weread.noteCount !== undefined ? `${note.weread.noteCount} 条划线` : undefined]
+          .filter(Boolean)
+          .join(" · ")}
+      </p>
+    )}
     {note.description && <p class="entry-card__description">{note.description}</p>}
     {note.topics.length > 0 && (
       <ul class="entry-card__topics" aria-label="所属专题">
@@ -35,3 +42,12 @@ const kindLabel = note.kind === "book" ? "书摘" : "文章";
     )}
   </div>
 </article>
+
+<style>
+  .entry-card__reading-meta {
+    color: var(--ink-muted);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    margin: 0.25rem 0 0;
+  }
+</style>

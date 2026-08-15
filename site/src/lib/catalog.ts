@@ -41,6 +41,12 @@ export interface WereadMetadata {
   isbn?: string;
   reviewCount?: number;
   noteCount?: number;
+  bookmarkCount?: number;
+  translator?: string;
+  category?: string;
+  publisher?: string;
+  publishTime?: string;
+  rating?: string;
 }
 
 export interface Note {
@@ -53,7 +59,7 @@ export interface Note {
   excerpt?: string;
   cover?: Cover;
   sourceUrl?: string;
-  kind: 'article' | 'book';
+  kind: 'article' | 'book' | 'stats';
   draft: boolean;
   author?: string;
   weread?: WereadMetadata;
@@ -278,6 +284,12 @@ function getWereadMetadata(data: RawData): WereadMetadata | undefined {
     isbn: stringValue(data.isbn),
     reviewCount: numberValue(data.reviewCount),
     noteCount: numberValue(data.noteCount),
+    bookmarkCount: numberValue(data.bookmarkCount),
+    translator: stringValue(data.translator),
+    category: stringValue(data.category),
+    publisher: stringValue(data.publisher),
+    publishTime: stringValue(data.publishTime),
+    rating: stringValue(data.rating),
   };
 }
 
@@ -303,6 +315,7 @@ async function buildCatalog(): Promise<Catalog> {
     const topicNames = pathParts.slice(1, -1).filter((part) => part !== '文本附件');
     const description = getDescription(entry.data, entry.body);
     const weread = getWereadMetadata(entry.data);
+    const isReadingStats = entry.data.doc_type === 'weread-reading-stats';
 
     return {
       id: stableId(title, sourcePath),
@@ -314,7 +327,7 @@ async function buildCatalog(): Promise<Catalog> {
       excerpt: description,
       cover: getCover(entry.data, title, sourcePath),
       sourceUrl: getSourceUrl(entry.data, entry.body),
-      kind: weread ? 'book' : 'article',
+      kind: weread ? 'book' : isReadingStats ? 'stats' : 'article',
       draft: entry.data.draft,
       author: weread?.author ?? stringValue(entry.data.author),
       weread,

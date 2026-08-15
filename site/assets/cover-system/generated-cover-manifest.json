@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-07-26T05:41:17.751Z",
+  "generatedAt": "2026-08-15T04:48:09.800Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "sourceArtwork": "site/assets/cover-system/editorial-collage.webp",
   "sourcePrompt": "Contemporary Chinese editorial collage on warm fibrous paper, with ink, torn paper, printmaking grain, archival marks and restrained vermilion; no text, logos, people or watermark.",
   "strategy": "One AI-generated source artwork plus deterministic title-, collection-, topic- and hash-driven local compositions.",
-  "count": 7,
+  "count": 8,
   "dimensions": {
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 561768,
+  "totalBytes": 640626,
   "records": [
     {
       "markdown": "安森垚/“地狱梗”为啥能这么火？.md",
@@ -58,6 +58,18 @@
       "cover480": "日新说Copernicium/文本附件/generated-cover-f77931baa662-480.webp",
       "bytes960": 61670,
       "bytes480": 17476
+    },
+    {
+      "markdown": "微信读书/微信读书阅读统计.md",
+      "title": "微信读书阅读统计",
+      "collection": "微信读书",
+      "topic": null,
+      "category": "general",
+      "seed": "f4539c5698b5",
+      "cover960": "微信读书/文本附件/generated-cover-f4539c5698b5-960.webp",
+      "cover480": "微信读书/文本附件/generated-cover-f4539c5698b5-480.webp",
+      "bytes960": 62452,
+      "bytes480": 16406
     },
     {
       "markdown": "夏夜荒原/星露谷物语是如何靠一个人制作出来的【夏夜荒原】.md",

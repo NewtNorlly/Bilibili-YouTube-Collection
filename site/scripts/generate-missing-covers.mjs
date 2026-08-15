@@ -591,7 +591,18 @@ async function main() {
     return record;
   });
 
-  const totalBytes = records.reduce((sum, record) => sum + record.bytes960 + record.bytes480, 0);
+  let previousRecords = [];
+  try {
+    const previousManifest = JSON.parse(await readFile(manifestPath, "utf8"));
+    previousRecords = Array.isArray(previousManifest.records) ? previousManifest.records : [];
+  } catch {
+    // 首次生成时不存在旧清单。
+  }
+  const recordMap = new Map(previousRecords.map((record) => [record.markdown, record]));
+  for (const record of records) recordMap.set(record.markdown, record);
+  const allRecords = Array.from(recordMap.values()).sort((left, right) =>
+    left.markdown.localeCompare(right.markdown, "zh-CN"));
+  const totalBytes = allRecords.reduce((sum, record) => sum + record.bytes960 + record.bytes480, 0);
   if (previewMode) {
     console.log(`预览完成：${records.length} 张，目录 ${toPosix(path.relative(repositoryRoot, previewDirectory))}。`);
     return;
@@ -605,13 +616,13 @@ async function main() {
       sourceArtwork: "site/assets/cover-system/editorial-collage.webp",
       sourcePrompt: "Contemporary Chinese editorial collage on warm fibrous paper, with ink, torn paper, printmaking grain, archival marks and restrained vermilion; no text, logos, people or watermark.",
       strategy: "One AI-generated source artwork plus deterministic title-, collection-, topic- and hash-driven local compositions.",
-      count: records.length,
+      count: allRecords.length,
       dimensions: {
         full: `${width}x${height}`,
         small: `${smallWidth}x${smallHeight}`,
       },
       totalBytes,
-      records,
+      records: allRecords,
     }, null, 2)}\n`,
     "utf8",
   );
