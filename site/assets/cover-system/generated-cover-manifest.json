@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02T10:58:34.582Z",
+  "generatedAt": "2026-09-02T11:43:46.781Z",
   "generator": "site/scripts/generate-missing-covers.mjs",
   "sourceArtwork": "site/assets/cover-system/editorial-collage.webp",
   "sourcePrompt": "Contemporary Chinese editorial collage on warm fibrous paper, with ink, torn paper, printmaking grain, archival marks and restrained vermilion; no text, logos, people or watermark.",
@@ -9,7 +9,7 @@
     "full": "960x640",
     "small": "480x320"
   },
-  "totalBytes": 746664,
+  "totalBytes": 966302,
   "records": [
     {
       "markdown": "安森垚/“地狱梗”为啥能这么火？.md",
@@ -44,8 +44,8 @@
       "seed": "9eb6847b1db0",
       "cover960": "程序员鱼皮/文本附件/generated-cover-9eb6847b1db0-960.webp",
       "cover480": "程序员鱼皮/文本附件/generated-cover-9eb6847b1db0-480.webp",
-      "bytes960": 20412,
-      "bytes480": 8314
+      "bytes960": 65734,
+      "bytes480": 19174
     },
     {
       "markdown": "大圆镜科普/鬼压床：全人类为何共享着同一个噩梦？.md",
@@ -68,8 +68,8 @@
       "seed": "90f3a12cf622",
       "cover960": "猫村猫村/文本附件/generated-cover-90f3a12cf622-960.webp",
       "cover480": "猫村猫村/文本附件/generated-cover-90f3a12cf622-480.webp",
-      "bytes960": 17114,
-      "bytes480": 6840
+      "bytes960": 61288,
+      "bytes480": 17186
     },
     {
       "markdown": "日新说Copernicium/高市早苗第二？是谁把藤森庆子推上了秘鲁总统宝座 【日新说030】.md",
@@ -116,8 +116,8 @@
       "seed": "b0194c87ce52",
       "cover960": "徐三石/文本附件/generated-cover-b0194c87ce52-960.webp",
       "cover480": "徐三石/文本附件/generated-cover-b0194c87ce52-480.webp",
-      "bytes960": 16170,
-      "bytes480": 6412
+      "bytes960": 60330,
+      "bytes480": 16664
     },
     {
       "markdown": "周小辣/我不属于城市，也不属于故乡.md",
@@ -140,8 +140,8 @@
       "seed": "1220dc9d4d48",
       "cover960": "Open圆/文本附件/generated-cover-1220dc9d4d48-960.webp",
       "cover480": "Open圆/文本附件/generated-cover-1220dc9d4d48-480.webp",
-      "bytes960": 22190,
-      "bytes480": 8586
+      "bytes960": 66062,
+      "bytes480": 19238
     },
     {
       "markdown": "Yume梦见科学史/在四百年近代科学史上，大众爱好者如何参与科研？梦见科学史五分钟.md",
