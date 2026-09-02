@@ -1,0 +1,83 @@
+﻿---
+import SearchBar from "../components/SearchBar.astro";
+import "../styles/global.css";
+import { withBase } from "../lib/url";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string | false;
+  pageClass?: string;
+}
+
+const {
+  title,
+  description = "从哔哩哔哩与 YouTube 影像中整理而来的中文文本档案。",
+  canonicalPath = "/",
+  pageClass = "",
+} = Astro.props;
+
+const siteName = "影像文本收藏馆";
+const documentTitle = title ? `${title}｜${siteName}` : siteName;
+const canonicalUrl = canonicalPath !== false && Astro.site
+  ? new URL(withBase(canonicalPath), Astro.site)
+  : undefined;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href={withBase("favicon.ico")} sizes="48x48" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f2eadc" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <title>{documentTitle}</title>
+  </head>
+  <body class={pageClass}>
+    <a class="skip-link" href="#main-content">跳到正文</a>
+
+    <header class="site-header">
+      <div class="site-header__rule" aria-hidden="true"></div>
+      <div class="shell site-header__inner">
+        <a class="site-brand" href={withBase("/")} aria-label={`${siteName}首页`}>
+          <span class="site-brand__seal" aria-hidden="true">藏</span>
+          <span class="site-brand__copy">
+            <span class="site-brand__name">{siteName}</span>
+          </span>
+        </a>
+
+        <nav class="site-nav" aria-label="主导航">
+          <SearchBar />
+          <a href={withBase("/")}>首页</a>
+          <a href={withBase("/#collections")}>合集</a>
+          <a href={withBase("/#topics")}>专题</a>
+          <a
+            href="https://github.com/NewtNorlly/Bilibili-YouTube-Collection"
+            target="_blank"
+            rel="noreferrer"
+          >仓库</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell site-footer__inner">
+        <div>
+          <p class="site-footer__title">影像文本收藏馆</p>
+          <p class="site-footer__note">保存、整理与阅读公开影像留下的文字。</p>
+        </div>
+        <p class="site-footer__meta">
+          内容以仓库原始文件为准<br />
+          <a href="https://github.com/NewtNorlly/Bilibili-YouTube-Collection">查看 GitHub 仓库</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

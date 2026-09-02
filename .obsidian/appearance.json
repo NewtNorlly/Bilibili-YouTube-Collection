@@ -1,0 +1,14 @@
+{
+  "accentColor": "#8cd9e8",
+  "cssTheme": "AnuPpuccin",
+  "theme": "moonstone",
+  "baseFontSize": 24,
+  "textFontFamily": "思源宋体 CN",
+  "baseFontSizeAction": true,
+  "enabledCssSnippets": [
+    "homepage-banner",
+    "card-layout"
+  ],
+  "interfaceFontFamily": "思源宋体 CN",
+  "monospaceFontFamily": "思源宋体 CN"
+}

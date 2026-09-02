@@ -1,0 +1,159 @@
+{
+  "generatedAt": "2026-09-02T10:58:34.582Z",
+  "generator": "site/scripts/generate-missing-covers.mjs",
+  "sourceArtwork": "site/assets/cover-system/editorial-collage.webp",
+  "sourcePrompt": "Contemporary Chinese editorial collage on warm fibrous paper, with ink, torn paper, printmaking grain, archival marks and restrained vermilion; no text, logos, people or watermark.",
+  "strategy": "One AI-generated source artwork plus deterministic title-, collection-, topic- and hash-driven local compositions.",
+  "count": 12,
+  "dimensions": {
+    "full": "960x640",
+    "small": "480x320"
+  },
+  "totalBytes": 746664,
+  "records": [
+    {
+      "markdown": "安森垚/“地狱梗”为啥能这么火？.md",
+      "title": "“地狱梗”为啥能这么火？",
+      "collection": "安森垚",
+      "topic": null,
+      "category": "general",
+      "seed": "7c1d079870bc",
+      "cover960": "安森垚/文本附件/generated-cover-7c1d079870bc-960.webp",
+      "cover480": "安森垚/文本附件/generated-cover-7c1d079870bc-480.webp",
+      "bytes960": 58816,
+      "bytes480": 15880
+    },
+    {
+      "markdown": "北京大学出版社官方/为什么语言能重塑命运？人如何被困在“语言系统”中？五分钟读完硬核社科经典《语言学的邀请》.md",
+      "title": "为什么语言能重塑命运？人如何被困在“语言系统”中？五分钟读完硬核社科经典《语言学的邀请》",
+      "collection": "北京大学出版社官方",
+      "topic": null,
+      "category": "language",
+      "seed": "33ace0821faf",
+      "cover960": "北京大学出版社官方/文本附件/generated-cover-33ace0821faf-960.webp",
+      "cover480": "北京大学出版社官方/文本附件/generated-cover-33ace0821faf-480.webp",
+      "bytes960": 66790,
+      "bytes480": 19388
+    },
+    {
+      "markdown": "程序员鱼皮/如何开发小程序，有哪些方法，需要学点啥？程序员硬核讲解.md",
+      "title": "如何开发小程序，有哪些方法，需要学点啥？程序员硬核讲解",
+      "collection": "程序员鱼皮",
+      "topic": null,
+      "category": "general",
+      "seed": "9eb6847b1db0",
+      "cover960": "程序员鱼皮/文本附件/generated-cover-9eb6847b1db0-960.webp",
+      "cover480": "程序员鱼皮/文本附件/generated-cover-9eb6847b1db0-480.webp",
+      "bytes960": 20412,
+      "bytes480": 8314
+    },
+    {
+      "markdown": "大圆镜科普/鬼压床：全人类为何共享着同一个噩梦？.md",
+      "title": "鬼压床：全人类为何共享着同一个噩梦？",
+      "collection": "大圆镜科普",
+      "topic": null,
+      "category": "general",
+      "seed": "37f8eebc6977",
+      "cover960": "大圆镜科普/文本附件/generated-cover-37f8eebc6977-960.webp",
+      "cover480": "大圆镜科普/文本附件/generated-cover-37f8eebc6977-480.webp",
+      "bytes960": 61136,
+      "bytes480": 17154
+    },
+    {
+      "markdown": "猫村猫村/受不了吧唧嘴，头上不能有刘海原来是感官过载.md",
+      "title": "受不了吧唧嘴，头上不能有刘海原来是感官过载",
+      "collection": "猫村猫村",
+      "topic": null,
+      "category": "general",
+      "seed": "90f3a12cf622",
+      "cover960": "猫村猫村/文本附件/generated-cover-90f3a12cf622-960.webp",
+      "cover480": "猫村猫村/文本附件/generated-cover-90f3a12cf622-480.webp",
+      "bytes960": 17114,
+      "bytes480": 6840
+    },
+    {
+      "markdown": "日新说Copernicium/高市早苗第二？是谁把藤森庆子推上了秘鲁总统宝座 【日新说030】.md",
+      "title": "高市早苗第二？是谁把藤森庆子推上了秘鲁总统宝座 【日新说030】",
+      "collection": "日新说Copernicium",
+      "topic": null,
+      "category": "general",
+      "seed": "f77931baa662",
+      "cover960": "日新说Copernicium/文本附件/generated-cover-f77931baa662-960.webp",
+      "cover480": "日新说Copernicium/文本附件/generated-cover-f77931baa662-480.webp",
+      "bytes960": 61670,
+      "bytes480": 17476
+    },
+    {
+      "markdown": "微信读书/微信读书阅读统计.md",
+      "title": "微信读书阅读统计",
+      "collection": "微信读书",
+      "topic": null,
+      "category": "general",
+      "seed": "f4539c5698b5",
+      "cover960": "微信读书/文本附件/generated-cover-f4539c5698b5-960.webp",
+      "cover480": "微信读书/文本附件/generated-cover-f4539c5698b5-480.webp",
+      "bytes960": 62452,
+      "bytes480": 16406
+    },
+    {
+      "markdown": "夏夜荒原/星露谷物语是如何靠一个人制作出来的【夏夜荒原】.md",
+      "title": "星露谷物语是如何靠一个人制作出来的【夏夜荒原】",
+      "collection": "夏夜荒原",
+      "topic": null,
+      "category": "general",
+      "seed": "0bf1dc09239a",
+      "cover960": "夏夜荒原/文本附件/generated-cover-0bf1dc09239a-960.webp",
+      "cover480": "夏夜荒原/文本附件/generated-cover-0bf1dc09239a-480.webp",
+      "bytes960": 64640,
+      "bytes480": 17702
+    },
+    {
+      "markdown": "徐三石/读书还搞鄙视链的人，是我最反感的.md",
+      "title": "读书还搞鄙视链的人，是我最反感的",
+      "collection": "徐三石",
+      "topic": null,
+      "category": "general",
+      "seed": "b0194c87ce52",
+      "cover960": "徐三石/文本附件/generated-cover-b0194c87ce52-960.webp",
+      "cover480": "徐三石/文本附件/generated-cover-b0194c87ce52-480.webp",
+      "bytes960": 16170,
+      "bytes480": 6412
+    },
+    {
+      "markdown": "周小辣/我不属于城市，也不属于故乡.md",
+      "title": "我不属于城市，也不属于故乡",
+      "collection": "周小辣",
+      "topic": null,
+      "category": "society",
+      "seed": "4d50b3edac62",
+      "cover960": "周小辣/文本附件/generated-cover-4d50b3edac62-960.webp",
+      "cover480": "周小辣/文本附件/generated-cover-4d50b3edac62-480.webp",
+      "bytes960": 60484,
+      "bytes480": 15644
+    },
+    {
+      "markdown": "Open圆/详细教程，有了AI！从零开发微信小程序为什么还需168详细教程，有了AI！从零开发微信小程序为什么还需168步？【AI之外】步？【AI之外】.md",
+      "title": "详细教程，有了AI！从零开发微信小程序为什么还需168详细教程，有了AI！从零开发微信小程序为什么还需168步？【AI之外】步？【AI之外】",
+      "collection": "Open圆",
+      "topic": null,
+      "category": "technology",
+      "seed": "1220dc9d4d48",
+      "cover960": "Open圆/文本附件/generated-cover-1220dc9d4d48-960.webp",
+      "cover480": "Open圆/文本附件/generated-cover-1220dc9d4d48-480.webp",
+      "bytes960": 22190,
+      "bytes480": 8586
+    },
+    {
+      "markdown": "Yume梦见科学史/在四百年近代科学史上，大众爱好者如何参与科研？梦见科学史五分钟.md",
+      "title": "在四百年近代科学史上，大众爱好者如何参与科研？梦见科学史五分钟",
+      "collection": "Yume梦见科学史",
+      "topic": null,
+      "category": "general",
+      "seed": "f286dc290151",
+      "cover960": "Yume梦见科学史/文本附件/generated-cover-f286dc290151-960.webp",
+      "cover480": "Yume梦见科学史/文本附件/generated-cover-f286dc290151-480.webp",
+      "bytes960": 66092,
+      "bytes480": 18896
+    }
+  ]
+}
