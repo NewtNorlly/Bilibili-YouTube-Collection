@@ -61,8 +61,14 @@ const canonicalUrl = canonicalPath !== false && Astro.site
               <span class="site-brand__name">Lectures &amp; Échos</span>
             </span>
           </a>
+        </div>
 
-          <!-- 那朵小云 · 主题色卡切换器 -->
+        <div class="site-header__center">
+          <slot name="header-center" />
+        </div>
+
+        <div class="site-header__right">
+          <!-- 那朵小云 · 主题色卡切换器（置于时钟左侧） -->
           <div class="theme-cloud" id="themeCloud">
             <button
               type="button"
@@ -71,7 +77,7 @@ const canonicalUrl = canonicalPath !== false && Astro.site
               aria-haspopup="true"
               aria-expanded="false"
               aria-label="切换主题色卡"
-              title="切换主题色卡"
+              title="这里可以切换主题色卡"
             >
               <svg class="theme-cloud__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <use href="#icon-cloud"></use>
@@ -81,15 +87,11 @@ const canonicalUrl = canonicalPath !== false && Astro.site
               <div class="theme-grid" id="themeGrid"></div>
             </div>
           </div>
-        </div>
 
-        <div class="site-header__center">
-          <slot name="header-center" />
-        </div>
-
-        <div class="site-clock" id="siteClock" aria-label="当前时间">
-          <span class="site-clock__dot" aria-hidden="true"></span>
-          <span class="site-clock__time" id="clockTime">--:--:--</span>
+          <div class="site-clock" id="siteClock" aria-label="当前时间">
+            <span class="site-clock__dot" aria-hidden="true"></span>
+            <span class="site-clock__time" id="clockTime">--:--:--</span>
+          </div>
         </div>
       </div>
     </header>

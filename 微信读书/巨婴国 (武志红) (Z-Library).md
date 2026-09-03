@@ -8,7 +8,7 @@ bookmarkCount: 0
 author: ""
 cover: "https://weread-1258476243.file.myqcloud.com/app/assets/bookcover/book_cover_default_imported_03.png"
 progress: "0%"
-readingTime: "2分钟"
+readingTime: "3分钟"
 lastReadDate: 2025-08-21
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=98642c93643425f414253334f49334c62396447367936367777324a71384c6b50d"
 ---
@@ -19,10 +19,9 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=98642c93643425f414253334f
 > - ![巨婴国 (武志红) (Z-Library)|200](https://weread-1258476243.file.myqcloud.com/app/assets/bookcover/book_cover_default_imported_03.png)
 > - 书名：巨婴国 (武志红) (Z-Library)
 > - 阅读进度：0%
-> - 阅读时长：2分钟
+> - 阅读时长：3分钟
 > - 最后阅读：2025-08-21
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=98642c93643425f414253334f49334c62396447367936367777324a71384c6b50d
-
 
 # 高亮划线
 

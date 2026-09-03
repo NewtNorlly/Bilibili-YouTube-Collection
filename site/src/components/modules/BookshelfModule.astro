@@ -28,12 +28,6 @@ function firstChar(title: string): string {
   return Array.from(title.trim())[0] ?? "书";
 }
 
-/* 微信公众号头像（mmhead）不是书封，按无封面处理，走首字兜底 */
-function usableCover<T extends { src?: string }>(cover: T | undefined): T | undefined {
-  const src = cover?.src ?? "";
-  return src.includes("mmhead") ? undefined : cover;
-}
-
 /* 学术教材布面配色（沉稳、低饱和），「全部」固定用深藏青 */
 const CLOTH = [
   "#3E5C4A", "#7A3B36", "#8A5A2B", "#46556E", "#5C4A3A",
@@ -97,7 +91,7 @@ const CLOTH = [
     <!-- ═══ 图书网格（全部视图按最新阅读时间全局从新到旧） ═══ -->
     <div class="shelf-grid" data-shelf-grid>
       {allBooks.map((note) => {
-        const cover = usableCover(note.cover);
+        const cover = note.cover;
         return (
         <a
           class="book-card"
@@ -136,11 +130,13 @@ const CLOTH = [
 
 <script>
   // Bookshelf module: book-spine category filter + independent search
-  const spines = document.querySelectorAll<HTMLButtonElement>("[data-shelf-filter]");
-  const grid = document.querySelector<HTMLElement>("[data-shelf-grid]");
+  const root = document.querySelector<HTMLElement>("#panel-bookshelf");
+  const spines = root ? Array.from(root.querySelectorAll<HTMLButtonElement>("[data-shelf-filter]")) : [];
+  const grid = root?.querySelector<HTMLElement>("[data-shelf-grid]") ?? null;
   const books = grid ? Array.from(grid.querySelectorAll<HTMLElement>("[data-shelf-book]")) : [];
-  const searchInput = document.querySelector<HTMLInputElement>("[data-shelf-search]");
-  const emptyEl = document.querySelector<HTMLElement>("[data-shelf-empty]");
+  const searchInput = root?.querySelector<HTMLInputElement>("[data-shelf-search]") ?? null;
+  const searchBox = root?.querySelector<HTMLElement>(".module-search__inner") ?? null;
+  const emptyEl = root?.querySelector<HTMLElement>("[data-shelf-empty]") ?? null;
 
   let activeCategory = "";
   let searchQuery = "";
@@ -158,6 +154,16 @@ const CLOTH = [
     if (emptyEl) emptyEl.hidden = visible > 0;
   }
 
+  // 回车 / search 确认：应用过滤并把书网平滑滚入视口（结果常在 3D/书背下方）
+  function revealResults() {
+    applyFilters();
+    if (!grid) return;
+    const rect = grid.getBoundingClientRect();
+    if (rect.top > 140) {
+      window.scrollTo({ top: rect.top + window.scrollY - 104, behavior: "smooth" });
+    }
+  }
+
   for (const spine of spines) {
     spine.addEventListener("click", () => {
       for (const s of spines) {
@@ -171,8 +177,29 @@ const CLOTH = [
     });
   }
 
-  searchInput?.addEventListener("input", () => {
-    searchQuery = searchInput.value.trim().toLowerCase();
-    applyFilters();
+  // 点击放大镜或搜索框任意空白处都聚焦输入框
+  searchBox?.addEventListener("click", (event) => {
+    if (event.target !== searchInput) searchInput?.focus();
   });
+
+  if (searchInput) {
+    searchInput.addEventListener("input", (event) => {
+      // 中文输入法组词过程中不过滤，避免拼音字母把结果瞬间清空
+      if ((event as InputEvent).isComposing) return;
+      searchQuery = searchInput.value.trim().toLowerCase();
+      applyFilters();
+    });
+    searchInput.addEventListener("compositionend", () => {
+      searchQuery = searchInput.value.trim().toLowerCase();
+      applyFilters();
+    });
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        searchInput.blur();
+        revealResults();
+      }
+    });
+    searchInput.addEventListener("search", revealResults);
+  }
 </script>

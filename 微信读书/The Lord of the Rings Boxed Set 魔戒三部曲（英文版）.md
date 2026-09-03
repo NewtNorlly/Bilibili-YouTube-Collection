@@ -29,7 +29,6 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=47d32bc0813aba1f4g01176a"
 > - 最后阅读：2025-08-24
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=47d32bc0813aba1f4g01176a
 
-
 # 高亮划线
 
 ## BOOK SIX

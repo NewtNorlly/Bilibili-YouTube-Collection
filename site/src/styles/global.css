@@ -399,17 +399,26 @@
   }
 
   .site-header__inner {
-    display: flex;
-    min-height: 3.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
+    gap: 1rem;
+    min-height: 3.5rem;
   }
 
   .site-header__center {
-    flex: 1;
     display: flex;
     justify-content: center;
+    align-items: center;
+    min-width: 0;
+  }
+
+  /* 右侧：小云主题切换器 + 时钟 */
+  .site-header__right {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: 0.85rem;
     min-width: 0;
   }
 
@@ -490,11 +499,11 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* 顶栏左侧：品牌 + 小云主题切换器 */
+  /* 顶栏左侧：仅品牌 */
   .site-header__left {
     display: flex;
     align-items: center;
-    gap: 1.1rem;
+    justify-self: start;
     min-width: 0;
   }
 
@@ -548,7 +557,7 @@
   .theme-cloud__menu {
     position: absolute;
     top: calc(100% + 0.65rem);
-    left: 0;
+    right: 0;
     z-index: 120;
     min-width: 16.5rem;
     padding: 0.7rem;
@@ -560,7 +569,7 @@
     -webkit-backdrop-filter: blur(28px) saturate(1.6);
     opacity: 0;
     transform: translateY(-6px) scale(0.97);
-    transform-origin: top left;
+    transform-origin: top right;
     transition: opacity 0.2s var(--ease-out), transform 0.24s var(--ease-spring);
   }
 

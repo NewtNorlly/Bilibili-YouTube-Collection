@@ -197,12 +197,18 @@ function localCoverMedia(localPath: string): Pick<Cover, 'src' | 'srcSet' | 'thu
   };
 }
 
+/** 远程封面统一升级为 https：微信读书图床（qlogo.cn / weread 等）均支持 https，
+ *  避免在 https 页面因混合内容被拦截。仅用于封面，不影响原文外链。 */
+function secureCoverUrl(url: string | undefined): string | undefined {
+  return url?.startsWith('http://') ? `https://${url.slice('http://'.length)}` : url;
+}
+
 function getCover(data: RawData, title: string, sourcePath: string): Cover | undefined {
   const rawCover = data.cover;
   if (!rawCover) return undefined;
 
   if (typeof rawCover === 'string') {
-    const remoteCover = validHttpUrl(rawCover);
+    const remoteCover = secureCoverUrl(validHttpUrl(rawCover));
     if (remoteCover) return { src: remoteCover, alt: `${title}封面` };
 
     const localPath = resolveAssetPath(sourcePath, rawCover);
@@ -215,7 +221,7 @@ function getCover(data: RawData, title: string, sourcePath: string): Cover | und
   const image = stringValue(coverData.image);
   if (!image) return undefined;
 
-  const remoteCover = validHttpUrl(image);
+  const remoteCover = secureCoverUrl(validHttpUrl(image));
   const localPath = remoteCover ? undefined : resolveAssetPath(sourcePath, image);
   const localMedia = localPath ? localCoverMedia(localPath) : undefined;
   const src = remoteCover ?? localMedia?.src;

@@ -36,7 +36,6 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=01d325405cbb8401d6c93d0"
 > - 最后阅读：2025-08-24
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=01d325405cbb8401d6c93d0
 
-
 # 高亮划线
 
 ## CHAPTER TWENTY-NINE The Dream
@@ -84,6 +83,9 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=01d325405cbb8401d6c93d0"
 > 📌 sanest
 > ⏱ 2025-08-24 05:52:54
 > 💭 原型：sane
+>    a. 心智健全的,神志正常的
+>    a. 清醒的,明智的;合情合理的
+>    a. 无疾病的,健康的
 > 🕰 2025-08-24 05:53:01
 
 > 📌 Half the many perches were empty; every now and then, another owl would swoop in through one of the windows, returning from its night's hunting with a mouse in its beak.

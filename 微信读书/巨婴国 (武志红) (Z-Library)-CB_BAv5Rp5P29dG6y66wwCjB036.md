@@ -9,7 +9,7 @@ author: ""
 cover: "https://weread-1258476243.file.myqcloud.com/app/assets/bookcover/book_cover_default_imported_03.png"
 progress: "0%"
 readingTime: "1分钟"
-lastReadDate: 2025-08-21
+lastReadDate: 2025-08-25
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=53842d63643425f424176355270355032396447367936367777436a42303336624"
 ---
 
@@ -20,9 +20,8 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=53842d63643425f4241763552
 > - 书名：巨婴国 (武志红) (Z-Library)
 > - 阅读进度：0%
 > - 阅读时长：1分钟
-> - 最后阅读：2025-08-21
+> - 最后阅读：2025-08-25
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=53842d63643425f424176355270355032396447367936367777436a42303336624
-
 
 # 高亮划线
 

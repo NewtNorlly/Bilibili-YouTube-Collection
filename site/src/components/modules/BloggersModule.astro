@@ -1,7 +1,8 @@
 ---
 import Cover from "../Cover.astro";
 import { getCatalog, type CollectionSummary } from "../../lib/catalog";
-import { collectionUrl } from "../../lib/url";
+import { pinyinInitialOf } from "../../lib/pinyin";
+import { collectionUrl, noteUrl } from "../../lib/url";
 
 interface Props {
   active?: boolean;
@@ -14,31 +15,6 @@ const catalog = await getCatalog();
 /* 网络博主 = 微信读书之外的所有合集 */
 const collections = catalog.collections.filter((collection) => collection.kind !== "library");
 
-/* ---------- 首字母索引 ---------- */
-function pinyinFirst(c: string): string {
-  const map: Record<string, string> = {
-    啊: "A", 爱: "A", 安: "A",
-    本: "B", 哔: "B", 渤: "B", 捕: "B", 北: "B",
-    差: "C", 超: "C",
-    大: "D", 盗: "D", 毒: "D",
-    二: "E",
-    耿: "G",
-    何: "H", 河: "H", 黑: "H",
-    加: "J", 江: "J", 具: "J",
-    卡: "K",
-    蓝: "L", 浪: "L", 历: "L", 聊: "L",
-    麦: "M", 盲: "M", 木: "M",
-    青: "Q", 棋: "Q",
-    三: "S", 杉: "S", 十: "S", 孙: "S",
-    王: "W", 威: "W", 微: "W", 唯: "W", 文: "W", 我: "W", 乌: "W",
-    小: "X", 心: "X", 星: "X", 夏: "X",
-    要: "Y", 一: "Y", 英: "Y", 硬: "Y", 于: "Y", 元: "Y", 原: "Y", 源: "Y",
-    张: "Z", 周: "Z", 志: "Z", 最: "Z",
-    日: "R",
-  };
-  return map[c] ?? (/^[a-zA-Z]$/.test(c) ? c.toUpperCase() : "#");
-}
-
 interface LetterGroup {
   letter: string;
   collections: CollectionSummary[];
@@ -46,8 +22,7 @@ interface LetterGroup {
 
 const groups = new Map<string, CollectionSummary[]>();
 for (const col of collections) {
-  const first = [...col.name][0] ?? "#";
-  const letter = pinyinFirst(first);
+  const letter = pinyinInitialOf(col.name);
   if (!groups.has(letter)) groups.set(letter, []);
   groups.get(letter)!.push(col);
 }
@@ -65,11 +40,25 @@ const letterGroups: LetterGroup[] = sortedLetters.map((letter) => ({
 
 const kindLabel = (kind: string) => (kind === "series" ? "专题集" : "创作者");
 
-/* 微信公众号头像（mmhead）不是封面，按无封面处理 */
-function usableCover<T extends { src?: string }>(cover: T | undefined): T | undefined {
-  const src = cover?.src ?? "";
-  return src.includes("mmhead") ? undefined : cover;
+/* 相关文本：网络博主合集下的全部单篇文章，供搜索时作为第二类结果 */
+interface ArticleHit {
+  title: string;
+  collection: string;
+  href: string;
+  thumb: string;
 }
+const articleIndex: ArticleHit[] = collections
+  .flatMap((col) =>
+    col.notes
+      .filter((note) => !note.draft)
+      .map((note) => ({
+        title: note.title,
+        collection: col.name,
+        href: noteUrl(note.id),
+        thumb: note.cover?.thumbnailSrc ?? note.cover?.src ?? "",
+      })),
+  )
+  .sort((a, b) => a.title.localeCompare(b.title, "zh-CN"));
 ---
 
 <section
@@ -113,36 +102,47 @@ function usableCover<T extends { src?: string }>(cover: T | undefined): T | unde
       ))}
     </nav>
 
-    <!-- ═══ 首字母分组 · 克制字母章 ═══ -->
-    <div class="blog-groups" data-blog-groups>
-      {letterGroups.map((g) => (
-        <div class="blog-group" data-letter={g.letter}>
-          <div class="blog-group__header">
-            <span class="blog-group__letter" aria-hidden="true">{g.letter}</span>
+    <!-- ═══ 第一类结果：博主 / 合集（首字母分组） ═══ -->
+    <section class="result-section" data-collection-section>
+      <h3 class="result-section__title" data-collection-title hidden>博主 / 合集</h3>
+      <div class="blog-groups" data-blog-groups>
+        {letterGroups.map((g) => (
+          <div class="blog-group" data-letter={g.letter}>
+            <div class="blog-group__header">
+              <span class="blog-group__letter" aria-hidden="true">{g.letter}</span>
+            </div>
+            <div class="blog-grid">
+              {g.collections.map((col) => (
+                <a
+                  class="blog-card"
+                  href={collectionUrl(col.id)}
+                  data-search-text={`${col.name} ${kindLabel(col.kind)}`.toLowerCase()}
+                >
+                  <div class="blog-card__cover">
+                    <Cover cover={col.cover} title={col.name} thumbnail />
+                  </div>
+                  <div class="blog-card__body">
+                    <span class="blog-card__kind">{kindLabel(col.kind)}</span>
+                    <h4 class="blog-card__name">{col.name}</h4>
+                  </div>
+                </a>
+              ))}
+            </div>
           </div>
-          <div class="blog-grid">
-            {g.collections.map((col) => (
-              <a
-                class="blog-card"
-                href={collectionUrl(col.id)}
-                data-search-text={`${col.name} ${kindLabel(col.kind)}`.toLowerCase()}
-              >
-                <div class="blog-card__cover">
-                  <Cover cover={usableCover(col.cover)} title={col.name} thumbnail />
-                </div>
-                <div class="blog-card__body">
-                  <span class="blog-card__kind">{kindLabel(col.kind)}</span>
-                  <h4 class="blog-card__name">{col.name}</h4>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ═══ 第二类结果：相关文本（单篇，搜索时动态渲染） ═══ -->
+    <section class="result-section" data-text-section hidden>
+      <h3 class="result-section__title">相关文本</h3>
+      <ul class="text-result-list" data-text-list></ul>
+    </section>
+
+    <script is:inline type="application/json" data-article-index set:html={JSON.stringify(articleIndex)} />
 
     <div class="shelf-empty" data-blog-empty hidden>
-      <p>没有找到匹配的博主</p>
+      <p>没有找到匹配的博主或文本</p>
     </div>
 
     {collections.length === 0 && <p class="empty-state">暂无网络博主内容。</p>}
@@ -150,17 +150,67 @@ function usableCover<T extends { src?: string }>(cover: T | undefined): T | unde
 </section>
 
 <script>
-  // Bloggers module: letter filter + independent search
-  const btns = document.querySelectorAll<HTMLButtonElement>(".blog-alpha__btn");
-  const groupsEl = document.querySelectorAll<HTMLElement>(".blog-group");
-  const searchInput = document.querySelector<HTMLInputElement>("[data-blog-search]");
-  const emptyEl = document.querySelector<HTMLElement>("[data-blog-empty]");
+  // Bloggers module: letter filter + independent search（合集 + 相关文本 两类结果）
+  const root = document.querySelector<HTMLElement>("#panel-bloggers");
+  const btns = root ? Array.from(root.querySelectorAll<HTMLButtonElement>(".blog-alpha__btn")) : [];
+  const groupsEl = root ? Array.from(root.querySelectorAll<HTMLElement>(".blog-group")) : [];
+  const searchInput = root?.querySelector<HTMLInputElement>("[data-blog-search]") ?? null;
+  const searchBox = root?.querySelector<HTMLElement>(".module-search__inner") ?? null;
+  const groupsContainer = root?.querySelector<HTMLElement>("[data-blog-groups]") ?? null;
+  const collectionSection = root?.querySelector<HTMLElement>("[data-collection-section]") ?? null;
+  const collectionTitle = root?.querySelector<HTMLElement>("[data-collection-title]") ?? null;
+  const textSection = root?.querySelector<HTMLElement>("[data-text-section]") ?? null;
+  const textList = root?.querySelector<HTMLElement>("[data-text-list]") ?? null;
+  const emptyEl = root?.querySelector<HTMLElement>("[data-blog-empty]") ?? null;
+
+  // 相关文本索引（构建期注入）
+  type ArticleHit = { title: string; collection: string; href: string; thumb: string };
+  let articleIndex: ArticleHit[] = [];
+  try {
+    const raw = root?.querySelector<HTMLScriptElement>("[data-article-index]")?.textContent ?? "[]";
+    articleIndex = JSON.parse(raw) as ArticleHit[];
+  } catch (e) {
+    articleIndex = [];
+  }
+  const MAX_TEXT_HITS = 30;
 
   let activeLetter = "";
   let searchQuery = "";
 
+  function escapeHTML(value: string): string {
+    return value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  /** 渲染第二类结果：相关文本（仅在有关键词时） */
+  function renderTextHits(): number {
+    if (!textList || !textSection) return 0;
+    if (!searchQuery) {
+      textSection.hidden = true;
+      textList.innerHTML = "";
+      return 0;
+    }
+    const hits = articleIndex
+      .filter((a) => a.title.toLowerCase().includes(searchQuery))
+      .slice(0, MAX_TEXT_HITS);
+
+    textList.innerHTML = hits
+      .map((a) => {
+        const thumb = a.thumb
+          ? `<span class="text-result__thumb"><img loading="lazy" decoding="async" src="${escapeHTML(a.thumb)}" alt="" /></span>`
+          : `<span class="text-result__thumb text-result__thumb--text">${escapeHTML(Array.from(a.title)[0] ?? "文")}</span>`;
+        return `<li class="text-result-item"><a href="${escapeHTML(a.href)}">${thumb}<span class="text-result__main"><span class="text-result__title">${escapeHTML(a.title)}</span><span class="text-result__via">${escapeHTML(a.collection)}</span></span><span class="text-result__arrow" aria-hidden="true">›</span></a></li>`;
+      })
+      .join("");
+    textSection.hidden = hits.length === 0;
+    return hits.length;
+  }
+
   function applyFilters() {
-    let totalVisible = 0;
+    let collectionVisible = 0;
     for (const group of groupsEl) {
       const letter = group.dataset.letter ?? "";
       const letterMatch = !activeLetter || letter === activeLetter;
@@ -176,10 +226,27 @@ function usableCover<T extends { src?: string }>(cover: T | undefined): T | unde
       }
 
       group.style.display = letterMatch && groupVisible > 0 ? "" : "none";
-      totalVisible += groupVisible;
+      collectionVisible += groupVisible;
     }
 
-    if (emptyEl) emptyEl.hidden = totalVisible > 0;
+    const textVisible = renderTextHits();
+
+    // 搜索时给合集区加分区标题，把两类结果分开；无搜索词时回到字母浏览态
+    if (collectionTitle) collectionTitle.hidden = !searchQuery;
+    if (collectionSection) collectionSection.hidden = searchQuery ? collectionVisible === 0 : false;
+
+    if (emptyEl) emptyEl.hidden = collectionVisible + textVisible > 0;
+  }
+
+  // 回车 / search 确认：应用过滤并把结果区平滑滚入视口
+  function revealResults() {
+    applyFilters();
+    const target = collectionSection ?? groupsContainer;
+    if (!target) return;
+    const rect = target.getBoundingClientRect();
+    if (rect.top > 140) {
+      window.scrollTo({ top: rect.top + window.scrollY - 104, behavior: "smooth" });
+    }
   }
 
   for (const btn of btns) {
@@ -195,8 +262,30 @@ function usableCover<T extends { src?: string }>(cover: T | undefined): T | unde
     });
   }
 
-  searchInput?.addEventListener("input", () => {
-    searchQuery = searchInput.value.trim().toLowerCase();
-    applyFilters();
+  // 点击放大镜或搜索框任意空白处都聚焦输入框
+  searchBox?.addEventListener("click", (event) => {
+    if (event.target !== searchInput) searchInput?.focus();
   });
+
+  if (searchInput) {
+    searchInput.addEventListener("input", (event) => {
+      // 中文输入法组词过程中（isComposing）不过滤，避免拼音字母把结果瞬间清空
+      if ((event as InputEvent).isComposing) return;
+      searchQuery = searchInput.value.trim().toLowerCase();
+      applyFilters();
+    });
+    // 上屏后再兜底过滤一次
+    searchInput.addEventListener("compositionend", () => {
+      searchQuery = searchInput.value.trim().toLowerCase();
+      applyFilters();
+    });
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        searchInput.blur();
+        revealResults();
+      }
+    });
+    searchInput.addEventListener("search", revealResults);
+  }
 </script>
