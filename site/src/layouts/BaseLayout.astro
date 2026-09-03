@@ -1,5 +1,4 @@
-﻿---
-import SearchBar from "../components/SearchBar.astro";
+---
 import "../styles/global.css";
 import { withBase } from "../lib/url";
 
@@ -12,12 +11,12 @@ interface Props {
 
 const {
   title,
-  description = "从哔哩哔哩与 YouTube 影像中整理而来的中文文本档案。",
+  description = "Lectures & Échos — 个人阅读与收藏档案",
   canonicalPath = "/",
   pageClass = "",
 } = Astro.props;
 
-const siteName = "影像文本收藏馆";
+const siteName = "Lectures & Échos";
 const documentTitle = title ? `${title}｜${siteName}` : siteName;
 const canonicalUrl = canonicalPath !== false && Astro.site
   ? new URL(withBase(canonicalPath), Astro.site)
@@ -25,41 +24,73 @@ const canonicalUrl = canonicalPath !== false && Astro.site
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="cobalt">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href={withBase("favicon.ico")} sizes="48x48" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f2eadc" />
+    <meta name="theme-color" content="#f4f7fe" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <title>{documentTitle}</title>
+    {/* 渲染前应用记忆主题，避免闪烁；默认钴蓝 */}
+    <script is:inline>
+      try {
+        var saved = localStorage.getItem("le-theme");
+        if (saved) document.documentElement.setAttribute("data-theme", saved);
+      } catch (e) {}
+    </script>
   </head>
   <body class={pageClass}>
+    {/* SVG 精灵：小云 */}
+    <svg width="0" height="0" class="svg-sprite" aria-hidden="true" focusable="false">
+      <symbol id="icon-cloud" viewBox="0 0 24 24">
+        <path d="M7.5 18.5h10a4 4 0 0 0 .5-8 6.3 6.3 0 0 0-12-1.5 4.8 4.8 0 0 0 1.5 9.5Z" />
+      </symbol>
+    </svg>
+
     <a class="skip-link" href="#main-content">跳到正文</a>
 
-    <header class="site-header">
-      <div class="site-header__rule" aria-hidden="true"></div>
+    <header class="site-header" id="siteHeader">
       <div class="shell site-header__inner">
-        <a class="site-brand" href={withBase("/")} aria-label={`${siteName}首页`}>
-          <span class="site-brand__seal" aria-hidden="true">藏</span>
-          <span class="site-brand__copy">
-            <span class="site-brand__name">{siteName}</span>
-          </span>
-        </a>
+        <div class="site-header__left">
+          <a class="site-brand" href={withBase("/")} aria-label="Lectures & Échos 首页">
+            <span class="site-brand__copy">
+              <span class="site-brand__name">Lectures &amp; Échos</span>
+              <span class="site-brand__sub">阅读与回声</span>
+            </span>
+          </a>
 
-        <nav class="site-nav" aria-label="主导航">
-          <SearchBar />
-          <a href={withBase("/")}>首页</a>
-          <a href={withBase("/#collections")}>合集</a>
-          <a href={withBase("/#topics")}>专题</a>
-          <a
-            href="https://github.com/NewtNorlly/Bilibili-YouTube-Collection"
-            target="_blank"
-            rel="noreferrer"
-          >仓库</a>
-        </nav>
+          <!-- 那朵小云 · 主题色卡切换器 -->
+          <div class="theme-cloud" id="themeCloud">
+            <button
+              type="button"
+              class="theme-cloud__btn"
+              id="cloudToggle"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-label="切换主题色卡"
+              title="切换主题色卡"
+            >
+              <svg class="theme-cloud__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <use href="#icon-cloud"></use>
+              </svg>
+            </button>
+            <div class="theme-cloud__menu" id="cloudMenu" role="menu" aria-label="选择主题色卡" hidden>
+              <div class="theme-grid" id="themeGrid"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="site-header__center">
+          <slot name="header-center" />
+        </div>
+
+        <div class="site-clock" id="siteClock" aria-label="当前时间">
+          <span class="site-clock__dot" aria-hidden="true"></span>
+          <span class="site-clock__time" id="clockTime">--:--:--</span>
+        </div>
       </div>
     </header>
 
@@ -70,8 +101,8 @@ const canonicalUrl = canonicalPath !== false && Astro.site
     <footer class="site-footer">
       <div class="shell site-footer__inner">
         <div>
-          <p class="site-footer__title">影像文本收藏馆</p>
-          <p class="site-footer__note">保存、整理与阅读公开影像留下的文字。</p>
+          <p class="site-footer__title">Lectures &amp; Échos</p>
+          <p class="site-footer__note">我的书架 · 微信读书归档｜网络博主 · 创作者档案</p>
         </div>
         <p class="site-footer__meta">
           内容以仓库原始文件为准<br />
@@ -79,5 +110,138 @@ const canonicalUrl = canonicalPath !== false && Astro.site
         </p>
       </div>
     </footer>
+
+    <script>
+      // Beijing time clock
+      function updateClock() {
+        const now = new Date();
+        const parts = new Intl.DateTimeFormat("en-GB", {
+          timeZone: "Asia/Shanghai",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        }).formatToParts(now);
+        const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "00";
+        const el = document.getElementById("clockTime");
+        if (el) el.textContent = `${get("hour")}:${get("minute")}:${get("second")}`;
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      // Scroll fade: hide when scrolling down, show when scrolling up or hovering
+      const header = document.getElementById("siteHeader");
+      let lastScroll = 0;
+      let ticking = false;
+
+      function onScroll() {
+        const currentScroll = window.scrollY;
+        if (currentScroll > 100 && currentScroll > lastScroll) {
+          header?.classList.add("is-hidden");
+        } else {
+          header?.classList.remove("is-hidden");
+        }
+        lastScroll = currentScroll;
+        ticking = false;
+      }
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (!ticking) {
+            requestAnimationFrame(onScroll);
+            ticking = true;
+          }
+        },
+        { passive: true },
+      );
+
+      /* ════════ 小云 · 主题色卡切换（钴蓝默认且排第一，排除熊猫/暗色） ════════ */
+      const THEMES = [
+        { id: "cobalt", name: "钴蓝", c: ["#2563EB", "#93C5FD", "#1E3A5F"] },
+        { id: "neko", name: "妮珂", c: ["#35BFAB", "#EDDD62", "#166056"] },
+        { id: "graphite", name: "石墨", c: ["#4F46E5", "#818CF8", "#312E81"] },
+        { id: "citrus", name: "柑橘", c: ["#EA580C", "#FDBA74", "#9A3412"] },
+        { id: "teal", name: "湖绿", c: ["#0D9488", "#5EEAD4", "#134E4A"] },
+        { id: "damson", name: "莺紫", c: ["#BE185D", "#F472B6", "#500724"] },
+        { id: "lavender", name: "薰衣草", c: ["#7C3AED", "#C4B5FD", "#3B0764"] },
+        { id: "terracotta", name: "陶土", c: ["#B84A2D", "#F3D1BE", "#7C2D12"] },
+      ];
+      const THEME_KEY = "le-theme";
+
+      const cloudRoot = document.getElementById("themeCloud");
+      const cloudToggle = document.getElementById("cloudToggle") as HTMLButtonElement | null;
+      const cloudMenu = document.getElementById("cloudMenu");
+      const themeGrid = document.getElementById("themeGrid");
+
+      function currentTheme(): string {
+        return document.documentElement.getAttribute("data-theme") || "cobalt";
+      }
+
+      function applyTheme(id: string) {
+        document.documentElement.setAttribute("data-theme", id);
+        try {
+          localStorage.setItem(THEME_KEY, id);
+        } catch (e) {}
+        themeGrid?.querySelectorAll<HTMLButtonElement>(".theme-choice").forEach((btn) => {
+          const on = btn.dataset.themeId === id;
+          btn.classList.toggle("is-active", on);
+          btn.setAttribute("aria-checked", String(on));
+        });
+        /* 同步 3D 模型背景光色 */
+        const houseFrame = document.getElementById("shelfHouseFrame") as HTMLIFrameElement | null;
+        houseFrame?.contentWindow?.postMessage({ type: "le-theme", theme: id }, "*");
+      }
+
+      if (themeGrid) {
+        for (const theme of THEMES) {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "theme-choice";
+          btn.setAttribute("role", "menuitemradio");
+          btn.dataset.themeId = theme.id;
+          btn.style.setProperty("--c-a", theme.c[0]);
+          btn.style.setProperty("--c-b", theme.c[1]);
+          btn.style.setProperty("--c-c", theme.c[2]);
+          btn.innerHTML = `<span class="theme-swatch" aria-hidden="true"></span><span class="theme-choice__name">${theme.name}</span>`;
+          btn.addEventListener("click", () => {
+            applyTheme(theme.id);
+            closeCloud();
+          });
+          themeGrid.appendChild(btn);
+        }
+        applyTheme(currentTheme());
+      }
+
+      function openCloud() {
+        if (!cloudMenu || !cloudToggle) return;
+        cloudMenu.hidden = false;
+        requestAnimationFrame(() => cloudMenu.classList.add("is-open"));
+        cloudToggle.setAttribute("aria-expanded", "true");
+      }
+
+      function closeCloud() {
+        if (!cloudMenu || !cloudToggle) return;
+        cloudMenu.classList.remove("is-open");
+        cloudToggle.setAttribute("aria-expanded", "false");
+        window.setTimeout(() => {
+          if (!cloudMenu.classList.contains("is-open")) cloudMenu.hidden = true;
+        }, 200);
+      }
+
+      cloudToggle?.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (cloudMenu?.classList.contains("is-open")) closeCloud();
+        else openCloud();
+      });
+
+      document.addEventListener("click", (event) => {
+        if (cloudRoot && !cloudRoot.contains(event.target as Node)) closeCloud();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeCloud();
+      });
+    </script>
   </body>
 </html>

@@ -1,239 +1,60 @@
-﻿---
+---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import FeaturedCarousel from "../components/FeaturedCarousel.astro";
-import Cover from "../components/Cover.astro";
-import { getCatalog, type CollectionSummary } from "../lib/catalog";
-import { collectionUrl, topicUrl } from "../lib/url";
+import HomeToggle from "../components/HomeToggle.astro";
+import BookshelfModule from "../components/modules/BookshelfModule.astro";
+import BloggersModule from "../components/modules/BloggersModule.astro";
 
-const catalog = await getCatalog();
-const notes = catalog.notes.filter((note) => !note.draft);
-const collections = catalog.collections;
-const topics = catalog.topics;
-
-/* 档案选读：所有已发布文章，客户端随机抽取 10 篇 */
-const allPublished = notes;
-
-/* ---------- 首字母索引 ---------- */
-function pinyinFirst(c: string): string {
-  const map: Record<string, string> = {
-    啊: "A", 爱: "A", 安: "A",
-    本: "B", 哔: "B", 渤: "B", 捕: "B", 北: "B",
-    差: "C", 超: "C",
-    大: "D", 盗: "D", 毒: "D",
-    二: "E",
-    耿: "G",
-    何: "H", 河: "H", 黑: "H",
-    加: "J", 江: "J", 具: "J",
-    卡: "K",
-    蓝: "L", 浪: "L", 历: "L", 聊: "L",
-    麦: "M", 盲: "M", 木: "M",
-    青: "Q", 棋: "Q",
-    三: "S", 杉: "S", 十: "S", 孙: "S",
-    王: "W", 威: "W", 微: "W", 唯: "W", 文: "W", 我: "W", 乌: "W",
-    小: "X", 心: "X", 星: "X", 夏: "X",
-    要: "Y", 一: "Y", 英: "Y", 硬: "Y", 于: "Y", 元: "Y", 原: "Y", 源: "Y",
-    张: "Z", 周: "Z", 志: "Z", 最: "Z",
-    日: "R",
-  };
-  return map[c] ?? (/^[a-zA-Z]$/.test(c) ? c.toUpperCase() : "#");
-}
-
-interface LetterGroup {
-  letter: string;
-  collections: CollectionSummary[];
-}
-
-const groups = new Map<string, CollectionSummary[]>();
-for (const col of collections) {
-  const first = [...col.name][0] ?? "#";
-  const letter = pinyinFirst(first);
-  if (!groups.has(letter)) groups.set(letter, []);
-  groups.get(letter)!.push(col);
-}
-
-const sortedLetters = [...groups.keys()].sort((a, b) => {
-  if (a === "#") return 1;
-  if (b === "#") return -1;
-  return a.localeCompare(b);
-});
-
-const letterGroups: LetterGroup[] = sortedLetters.map((letter) => ({
-  letter,
-  collections: groups.get(letter)!,
-}));
-
-const defaultLetter = "H";
-
-const kindLabel = (kind: string) => {
-  if (kind === "library") return "书库";
-  if (kind === "series") return "专题集";
-  return "创作者";
-};
+const bookshelfActive = true;
+const bloggersActive = false;
 ---
 
-<BaseLayout>
-  <!-- ════════════════ 档案选读 · 左文右卡 ════════════════ -->
-  <section class="home-section home-section--ruled" id="featured">
-    <div class="shell">
-      <header class="section-heading">
-        <h2 class="section-heading__title">档案选读</h2>
-        <p class="section-heading__index">FROM THE COLLECTION</p>
-      </header>
-
-      <div class="featured-layout">
-        <div class="featured-intro">
-          <p>
-            从影像，到可检索的文字。按创作者与专题整理哔哩哔哩、YouTube 相关文本，也收藏独立的阅读笔记。这里保留原有目录关系，让每一次摘录都有出处可循。
-          </p>
-          <p>
-            截至目前，已收录文本&nbsp;<strong>{notes.length} 篇</strong>，内容合集&nbsp;<strong>{collections.length} 册</strong>，独立专题&nbsp;<strong>{topics.length} 个</strong>。
-          </p>
-        </div>
-
-        <div class="featured-stage">
-          {allPublished.length > 0 ? (
-            <FeaturedCarousel notes={allPublished} />
-          ) : (
-            <p class="empty-state">暂无选读内容。</p>
-          )}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ════════════════ 合集目录 · 首字母索引 + 封面卡片 ════════════════ -->
-  <section class="home-section home-section--ruled" id="collections">
-    <div class="shell">
-      <header class="section-heading">
-        <h2 class="section-heading__title">合集目录</h2>
-        <p class="section-heading__index">COLLECTIONS / {String(collections.length).padStart(2, "0")}</p>
-      </header>
-
-      <nav class="alpha-nav" aria-label="按首字母筛选合集">
-        {letterGroups.map((g) => (
-          <button
-            type="button"
-            class="alpha-nav__btn"
-            class:list={[{ "is-active": g.letter === defaultLetter }]}
-            data-letter={g.letter}
-            aria-pressed={g.letter === defaultLetter}
-          >
-            {g.letter}
-          </button>
-        ))}
-      </nav>
-
-      {letterGroups.map((g) => (
-        <div
-          class="alpha-group"
-          class:list={[{ "is-hidden": g.letter !== defaultLetter }]}
-          data-letter={g.letter}
-        >
-          <h3 class="alpha-group__heading">{g.letter}</h3>
-          <div class="coll-card-grid">
-            {g.collections.map((col) => (
-              <a class="coll-card" href={collectionUrl(col.id)}>
-                <div class="coll-card__cover">
-                  <Cover cover={col.cover} title={col.name} thumbnail />
-                </div>
-                <div class="coll-card__body">
-                  <span class="coll-card__kind">{kindLabel(col.kind)}</span>
-                  <h4 class="coll-card__name">{col.name}</h4>
-                  <p class="coll-card__counts">
-                    {col.noteCount} 篇{col.topicCount > 0 && ` · ${col.topicCount} 专题`}
-                  </p>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      ))}
-
-      {collections.length === 0 && (
-        <p class="empty-state">仓库中暂时没有可发布的合集。</p>
-      )}
-    </div>
-  </section>
-
-  <!-- ════════════════ 专题索引 · 封面卡片 ════════════════ -->
-  {topics.length > 0 && (
-    <section class="home-section home-section--ruled" id="topics">
-      <div class="shell">
-        <header class="section-heading">
-          <h2 class="section-heading__title">专题索引</h2>
-          <p class="section-heading__index">TOPICS / {String(topics.length).padStart(2, "0")}</p>
-        </header>
-
-        <div class="topic-card-grid">
-          {topics.map((topic) => (
-            <a class="topic-card" href={topicUrl(topic.id)}>
-              <div class="topic-card__cover">
-                <Cover cover={topic.cover} title={topic.name} thumbnail />
-              </div>
-              <div class="topic-card__body">
-                <span class="topic-card__collection">{topic.collectionName}</span>
-                <h4 class="topic-card__name">{topic.name}</h4>
-                <p class="topic-card__counts">{topic.noteCount} 篇</p>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
-  )}
+<BaseLayout
+  title="我的书架 · 网络博主"
+  description="个人内容收藏档案：微信读书书摘归档的「我的书架」，与 B 站 / YouTube 网络博主文本合集。"
+  canonicalPath="/"
+>
+  <Fragment slot="header-center">
+    <HomeToggle active="bookshelf" />
+  </Fragment>
+  <BookshelfModule active={bookshelfActive} />
+  <BloggersModule active={bloggersActive} />
 </BaseLayout>
 
 <script>
-  /* 首字母筛选 */
-  const btns = document.querySelectorAll<HTMLButtonElement>('.alpha-nav__btn');
-  const alphaGroups = document.querySelectorAll<HTMLElement>('.alpha-group');
-  let activeLetter = 'H';
-  let transitionId = 0;
+  /* ════════════ 双模块切换（我的书架 / 网络博主） ════════════ */
+  const tabs = document.querySelectorAll<HTMLButtonElement>("[data-module-target]");
+  const panels = document.querySelectorAll<HTMLElement>("[data-module-panel]");
+  const indicator = document.querySelector<HTMLElement>(".module-switch__indicator");
 
-  function filter(letter: string) {
-    const currentId = ++transitionId;
-    const visibleGroups = [...alphaGroups].filter((group) => !group.classList.contains('is-hidden'));
-    const targetGroups = [...alphaGroups].filter((group) => letter === '' || group.dataset.letter === letter);
-
-    activeLetter = letter;
-    btns.forEach((b) => {
-      const isActive = b.dataset.letter === letter;
-      b.classList.toggle('is-active', isActive);
-      b.setAttribute('aria-pressed', String(isActive));
+  function activateModule(name: "bookshelf" | "bloggers", updateHash = true) {
+    panels.forEach((panel) => {
+      panel.classList.toggle("is-active", panel.dataset.modulePanel === name);
     });
-
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      alphaGroups.forEach((group) => {
-        group.classList.toggle('is-hidden', !targetGroups.includes(group));
-      });
-      return;
+    tabs.forEach((tab) => {
+      const on = tab.dataset.moduleTarget === name;
+      tab.classList.toggle("is-active", on);
+      tab.setAttribute("aria-selected", String(on));
+    });
+    if (indicator) indicator.dataset.active = name;
+    if (updateHash) {
+      const hash = name === "bloggers" ? "#bloggers" : "#bookshelf";
+      if (location.hash !== hash) history.replaceState(null, "", hash);
     }
-
-    visibleGroups.forEach((group) => group.classList.add('is-exiting'));
-
-    window.setTimeout(() => {
-      if (currentId !== transitionId) return;
-
-      alphaGroups.forEach((group) => {
-        const shouldShow = targetGroups.includes(group);
-        group.classList.toggle('is-hidden', !shouldShow);
-        group.classList.remove('is-exiting');
-        group.classList.toggle('is-entering', shouldShow);
-      });
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          if (currentId !== transitionId) return;
-          targetGroups.forEach((group) => group.classList.remove('is-entering'));
-        });
-      });
-    }, 120);
   }
 
-  btns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const letter = btn.dataset.letter!;
-      filter(activeLetter === letter ? '' : letter);
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const name = (tab.dataset.moduleTarget ?? "bookshelf") as "bookshelf" | "bloggers";
+      activateModule(name);
     });
+  });
+
+  /* 支持 #bookshelf / #bloggers 直达深链 */
+  const initial = location.hash === "#bloggers" ? "bloggers" : "bookshelf";
+  activateModule(initial, false);
+
+  window.addEventListener("hashchange", () => {
+    const name = location.hash === "#bloggers" ? "bloggers" : "bookshelf";
+    activateModule(name, false);
   });
 </script>

@@ -208,7 +208,7 @@
 .prose .callout {
   padding: 1.25rem 1.5rem;
   border-block: 1px solid var(--line);
-  background: rgb(250 246 237 / 55%);
+  background: hsl(var(--muted) / 0.5);
   color: var(--ink-soft);
 }
 
@@ -237,7 +237,7 @@
   height: auto;
   margin: 2rem auto;
   border-radius: var(--radius-sm);
-  box-shadow: 0 10px 28px rgb(60 46 29 / 10%);
+  box-shadow: 0 10px 28px hsl(var(--fg) / 8%);
 }
 
 .prose hr {

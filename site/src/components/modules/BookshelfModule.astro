@@ -1,0 +1,178 @@
+---
+import { noteUrl, withBase } from "../../lib/url";
+import { getBookshelf } from "../../lib/bookshelf";
+
+interface Props {
+  active?: boolean;
+}
+
+const { active = false } = Astro.props;
+
+const data = await getBookshelf();
+const { categories, allBooks } = data;
+
+/* 每本书所属分类（用于前端筛选） */
+const categoryOf = new Map<string, string>();
+for (const cat of categories) {
+  for (const note of cat.notes) categoryOf.set(note.id, cat.name);
+}
+
+function progressPercent(note: { weread?: { progress?: string } }): number {
+  const value = note.weread?.progress;
+  if (!value) return 0;
+  const num = parseFloat(String(value).replace(/[^\d.]/g, ""));
+  return Number.isFinite(num) ? Math.min(100, Math.max(0, num)) : 0;
+}
+
+function firstChar(title: string): string {
+  return Array.from(title.trim())[0] ?? "书";
+}
+
+/* 微信公众号头像（mmhead）不是书封，按无封面处理，走首字兜底 */
+function usableCover<T extends { src?: string }>(cover: T | undefined): T | undefined {
+  const src = cover?.src ?? "";
+  return src.includes("mmhead") ? undefined : cover;
+}
+
+/* 学术教材布面配色（沉稳、低饱和），「全部」固定用深藏青 */
+const CLOTH = [
+  "#3E5C4A", "#7A3B36", "#8A5A2B", "#46556E", "#5C4A3A",
+  "#3F5D63", "#6B4A63", "#54613F", "#7A4B2E", "#374B63",
+  "#5D4E37", "#4A5A52", "#6E4650", "#43536B", "#5F5A3E", "#56607A",
+];
+---
+
+<section
+  class:list={["module-panel", { "is-active": active }]}
+  id="panel-bookshelf"
+  data-module-panel="bookshelf"
+  role="tabpanel"
+  aria-labelledby="tab-bookshelf"
+>
+  <div class="shell">
+    <!-- ═══ 独立搜索 ═══ -->
+    <div class="module-search">
+      <div class="module-search__inner">
+        <svg class="module-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input
+          type="search"
+          class="module-search__input"
+          placeholder="搜索书名或作者…"
+          aria-label="搜索书架"
+          data-shelf-search
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <!-- ═══ 3D 模型展示（史密斯一家住宅 · 随主题色卡切换背景光色） ═══ -->
+    <div class="shelf-3d">
+      <iframe
+        class="shelf-3d__frame"
+        id="shelfHouseFrame"
+        src={withBase("3d/smith-house.html") + "#cobalt"}
+        title="史密斯一家住宅 3D 模型"
+        loading="eager"
+      ></iframe>
+    </div>
+
+    <!-- ═══ 书背分类（最左「全部」，竖排，点击筛选） ═══ -->
+    <div class="shelf-spines" role="tablist" aria-label="按分类筛选书架">
+      <button type="button" class="shelf-spine is-active" style="--cloth:#2F415B" data-shelf-filter="" aria-pressed="true">全部</button>
+      {categories.map((cat, i) => (
+        <button
+          type="button"
+          class="shelf-spine"
+          style={`--cloth:${CLOTH[i % CLOTH.length]}`}
+          data-shelf-filter={cat.name}
+          aria-pressed="false"
+        >{cat.name}</button>
+      ))}
+    </div>
+    <div class="shelf-spines-plank" aria-hidden="true"></div>
+
+    <!-- ═══ 图书网格（全部视图按最新阅读时间全局从新到旧） ═══ -->
+    <div class="shelf-grid" data-shelf-grid>
+      {allBooks.map((note) => {
+        const cover = usableCover(note.cover);
+        return (
+        <a
+          class="book-card"
+          href={noteUrl(note.id)}
+          data-shelf-book={categoryOf.get(note.id) ?? ""}
+          data-search-text={`${note.title} ${note.weread?.author ?? ""}`.toLowerCase()}
+        >
+          <span class="book-card__cover">
+            {cover ? (
+              <img src={cover.thumbnailSrc ?? cover.src} alt={`${note.title}封面`} loading="lazy" decoding="async" />
+            ) : (
+              <span class="book-card__fallback">{firstChar(note.title)}</span>
+            )}
+          </span>
+          <span class="book-card__body">
+            <span class="book-card__title">{note.title}</span>
+            <span class="book-card__meta">
+              {note.weread?.author && <span>{note.weread.author}</span>}
+            </span>
+            {progressPercent(note) > 0 && (
+              <span class="book-card__progress">
+                <span class="book-card__progress-bar"><i style={`width:${progressPercent(note)}%`}></i></span>
+              </span>
+            )}
+          </span>
+        </a>
+        );
+      })}
+    </div>
+
+    <div class="shelf-empty" data-shelf-empty hidden>
+      <p>没有找到匹配的书籍</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Bookshelf module: book-spine category filter + independent search
+  const spines = document.querySelectorAll<HTMLButtonElement>("[data-shelf-filter]");
+  const grid = document.querySelector<HTMLElement>("[data-shelf-grid]");
+  const books = grid ? Array.from(grid.querySelectorAll<HTMLElement>("[data-shelf-book]")) : [];
+  const searchInput = document.querySelector<HTMLInputElement>("[data-shelf-search]");
+  const emptyEl = document.querySelector<HTMLElement>("[data-shelf-empty]");
+
+  let activeCategory = "";
+  let searchQuery = "";
+
+  function applyFilters() {
+    let visible = 0;
+    for (const book of books) {
+      const catMatch = !activeCategory || book.dataset.shelfBook === activeCategory;
+      const text = book.dataset.searchText ?? "";
+      const searchMatch = !searchQuery || text.includes(searchQuery);
+      const show = catMatch && searchMatch;
+      book.style.display = show ? "" : "none";
+      if (show) visible++;
+    }
+    if (emptyEl) emptyEl.hidden = visible > 0;
+  }
+
+  for (const spine of spines) {
+    spine.addEventListener("click", () => {
+      for (const s of spines) {
+        s.classList.remove("is-active");
+        s.setAttribute("aria-pressed", "false");
+      }
+      spine.classList.add("is-active");
+      spine.setAttribute("aria-pressed", "true");
+      activeCategory = spine.dataset.shelfFilter ?? "";
+      applyFilters();
+    });
+  }
+
+  searchInput?.addEventListener("input", () => {
+    searchQuery = searchInput.value.trim().toLowerCase();
+    applyFilters();
+  });
+</script>
