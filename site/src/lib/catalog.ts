@@ -65,7 +65,6 @@ export interface Note {
   weread?: WereadMetadata;
   entry: CollectionEntry<'notes'>;
   sourcePath: string;
-  displayPath: string;
 }
 
 export interface CollectionSummary {
@@ -333,7 +332,6 @@ async function buildCatalog(): Promise<Catalog> {
       weread,
       entry,
       sourcePath,
-      displayPath: pathParts.slice(0, -1).join(' / '),
     };
   });
 

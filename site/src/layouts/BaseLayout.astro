@@ -28,6 +28,7 @@ const canonicalUrl = canonicalPath !== false && Astro.site
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href={withBase("favicon.ico")} sizes="48x48" />
+    <link rel="icon" type="image/png" href={withBase("favicon.png")} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f4f7fe" />
     <meta name="description" content={description} />
@@ -58,7 +59,6 @@ const canonicalUrl = canonicalPath !== false && Astro.site
           <a class="site-brand" href={withBase("/")} aria-label="Lectures & Échos 首页">
             <span class="site-brand__copy">
               <span class="site-brand__name">Lectures &amp; Échos</span>
-              <span class="site-brand__sub">阅读与回声</span>
             </span>
           </a>
 

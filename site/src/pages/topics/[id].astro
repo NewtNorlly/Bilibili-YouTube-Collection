@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import EntryCard from "../../components/EntryCard.astro";
 import { getCatalog, getTopicById } from "../../lib/catalog";
 import { collectionUrl, withBase } from "../../lib/url";
@@ -22,19 +21,16 @@ const notes = topic.notes.filter((note) => !note.draft);
   description={`${topic.collectionName}中的${topic.name}专题文本。`}
   canonicalPath={`/topics/${encodeURIComponent(topic.id)}/`}
 >
-  <div class="shell">
-    <Breadcrumbs
-      items={[
-        { label: "首页", href: withBase("/") },
-        { label: topic.collectionName, href: collectionUrl(topic.collectionId) },
-        { label: topic.name },
-      ]}
-    />
+  <div class="article-shell">
+    <nav class="article-back" aria-label="返回导航">
+      <a class="article-back__btn" href={`${withBase("/") + "#bloggers"}`}>返回首页</a>
+      <a class="article-back__btn" href={collectionUrl(topic.collectionId)}>返回上级</a>
+    </nav>
   </div>
 
-  <div class="shell" style="padding-top: 2rem;">
+  <div class="shell" style="padding-top: 0.5rem;">
     <p class="coll-desc">
-      本专题，<strong>{topic.name}</strong>，隶属合集「<a href={collectionUrl(topic.collectionId)}>{topic.collectionName}</a>」，共收录文本&nbsp;<strong>{notes.length} 篇</strong>。
+      专题<strong>{topic.name}</strong>，隶属「<a href={collectionUrl(topic.collectionId)}>{topic.collectionName}</a>」，共收录文本&nbsp;<strong>{notes.length} 篇</strong>。
     </p>
   </div>
 

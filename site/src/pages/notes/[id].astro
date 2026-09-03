@@ -1,13 +1,11 @@
 ---
 import { render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Cover from "../../components/Cover.astro";
 import { getCatalog, getNoteById } from "../../lib/catalog";
 import {
   collectionUrl,
   encodePath,
-  topicUrl,
   withBase,
 } from "../../lib/url";
 
@@ -33,6 +31,11 @@ const tableOfContents = headings
 const repositoryUrl = `https://github.com/NewtNorlly/Bilibili-YouTube-Collection/blob/main/${encodePath(note.sourcePath)}`;
 const kindLabel = note.kind === "book" ? "阅读笔记" : note.kind === "stats" ? "阅读统计" : "影像文本";
 const sourceLabel = note.kind === "book" ? "查看原始来源" : "观看原视频";
+
+/* 返回导航：书架类书籍回「我的书架」，博主文章回「网络博主」；博主文章另带「返回上级」到该博主的归档页 */
+const isBookshelf = note.kind === "book" || note.kind === "stats";
+const homeTarget = isBookshelf ? "bookshelf" : "bloggers";
+const parentUrl = isBookshelf ? undefined : collectionUrl(note.collectionId);
 ---
 
 <BaseLayout
@@ -42,14 +45,10 @@ const sourceLabel = note.kind === "book" ? "查看原始来源" : "观看原视�
   pageClass="article-page"
 >
   <div class="article-shell">
-    <Breadcrumbs
-      items={[
-        { label: "首页", href: withBase("/") },
-        { label: note.collectionName, href: collectionUrl(note.collectionId) },
-        ...note.topics.map((topic) => ({ label: topic.name, href: topicUrl(topic.id) })),
-        { label: note.title },
-      ]}
-    />
+    <nav class="article-back" aria-label="返回导航">
+      <a class="article-back__btn" href={`${withBase("/") + "#" + homeTarget}`}>返回首页</a>
+      {parentUrl && <a class="article-back__btn" href={parentUrl}>返回上级</a>}
+    </nav>
   </div>
 
   <header class="article-header">
@@ -115,11 +114,6 @@ const sourceLabel = note.kind === "book" ? "查看原始来源" : "观看原视�
     <article class="prose">
       <Content />
     </article>
-  </div>
-
-  <div class="article-shell article-end">
-    <p>档案路径：{note.sourcePath}</p>
-    <a href={collectionUrl(note.collectionId)}>返回「{note.collectionName}」</a>
   </div>
 </BaseLayout>
 

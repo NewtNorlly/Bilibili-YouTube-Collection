@@ -6,14 +6,13 @@ import Cover from "./Cover.astro";
 interface Props {
   note: Note;
   showCollection?: boolean;
-  compact?: boolean;
 }
 
-const { note, showCollection = false, compact = false } = Astro.props;
+const { note, showCollection = false } = Astro.props;
 const kindLabel = note.kind === "book" ? "书摘" : note.kind === "stats" ? "阅读统计" : "文章";
 ---
 
-<article class:list={["entry-card", { "entry-card--compact": compact }]}>
+<article class="entry-card">
   <a class="entry-card__cover-link" href={noteUrl(note.id)} tabindex="-1" aria-hidden="true">
     <Cover cover={note.cover} title={note.title} thumbnail />
   </a>

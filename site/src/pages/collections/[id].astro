@@ -1,15 +1,15 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import EntryCard from "../../components/EntryCard.astro";
 import { getCatalog, getCollectionById } from "../../lib/catalog";
 import { topicUrl, withBase } from "../../lib/url";
 
 export async function getStaticPaths() {
   const catalog = await getCatalog();
-  return catalog.collections.map((collection) => ({
-    params: { id: collection.id },
-  }));
+  /* 微信读书已由「我的书架」首页承载，不再单独生成归档页 */
+  return catalog.collections
+    .filter((collection) => collection.kind !== "library")
+    .map((collection) => ({ params: { id: collection.id } }));
 }
 
 const id = Astro.params.id ?? "";
@@ -20,11 +20,7 @@ const catalog = await getCatalog();
 const notes = collection.notes.filter((note) => !note.draft);
 const topics = catalog.topics.filter((topic) => topic.collectionId === collection.id);
 
-const kindLabel = collection.kind === "library"
-  ? "书库"
-  : collection.kind === "series"
-    ? "专题集"
-    : "创作者合集";
+const kindLabel = collection.kind === "series" ? "专题集" : "创作者";
 ---
 
 <BaseLayout
@@ -32,18 +28,15 @@ const kindLabel = collection.kind === "library"
   description={collection.description || `${collection.name}的文本档案。`}
   canonicalPath={`/collections/${encodeURIComponent(collection.id)}/`}
 >
-  <div class="shell">
-    <Breadcrumbs
-      items={[
-        { label: "首页", href: withBase("/") },
-        { label: collection.name },
-      ]}
-    />
+  <div class="article-shell">
+    <nav class="article-back" aria-label="返回导航">
+      <a class="article-back__btn" href={`${withBase("/") + "#bloggers"}`}>返回首页</a>
+    </nav>
   </div>
 
-  <div class="shell" style="padding-top: 2rem;">
+  <div class="shell" style="padding-top: 0.5rem;">
     <p class="coll-desc">
-      本合集，<strong>{collection.name}</strong>，共收录文本&nbsp;<strong>{notes.length} 篇</strong>{topics.length > 0 && `，专题&nbsp;${topics.length} 个`}，归档类型为{kindLabel}。
+      <strong>{collection.name}</strong>（{kindLabel}），共收录文本&nbsp;<strong>{notes.length} 篇</strong>{topics.length > 0 && `，专题&nbsp;${topics.length} 个`}。
     </p>
 
     {topics.length > 0 && (

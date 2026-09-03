@@ -87,7 +87,6 @@ export interface BookshelfData {
   categories: BookshelfCategory[];
   allBooks: Note[];
   totalBooks: number;
-  readingStatsNote?: Note;
 }
 
 /** 书的最新阅读时间排序键（YYYY-MM-DD 可直接字符串比较；缺失排末尾） */
@@ -125,9 +124,6 @@ export async function getBookshelf(): Promise<BookshelfData> {
   const books = catalog.notes.filter(
     (note) => note.collectionName === '微信读书' && note.kind === 'book' && !note.draft,
   );
-  const readingStatsNote = catalog.notes.find(
-    (note) => note.collectionName === '微信读书' && note.kind === 'stats' && !note.draft,
-  );
 
   const grouped = new Map<string, Note[]>();
   for (const note of books) {
@@ -160,5 +156,5 @@ export async function getBookshelf(): Promise<BookshelfData> {
   // 「全部」视图：跨分类按最新阅读时间全局从新到旧
   const allBooks = [...books].sort(compareByRecent);
 
-  return { categories, allBooks, totalBooks: books.length, readingStatsNote };
+  return { categories, allBooks, totalBooks: books.length };
 }
