@@ -27,6 +27,7 @@ const notes = defineCollection({
     pattern: [
       '**/*.md',
       '!README.md',
+      '!智能体操作手册.md',
       '!site/**',
       '!.github/**',
       '!.git/**',

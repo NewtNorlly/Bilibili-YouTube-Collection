@@ -9,7 +9,7 @@ author: "[英] J.R.R.托尔金"
 cover: "https://cdn.weread.qq.com/weread/cover/31/cpplatform_4y6s7suhvm4wsptukvrrxx/t6_cpplatform_4y6s7suhvm4wsptukvrrxx1752118268.jpg"
 progress: "0%"
 readingTime: "2分钟"
-lastReadDate: 2025-08-24
+lastReadDate: 2025-08-23
 category: "教育学习-外语"
 publishTime: "2025-07-01 00:00:00"
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=47d32bc0813aba1f4g01176a"
@@ -26,7 +26,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=47d32bc0813aba1f4g01176a"
 > - 分类：教育学习-外语
 > - 阅读进度：0%
 > - 阅读时长：2分钟
-> - 最后阅读：2025-08-24
+> - 最后阅读：2025-08-23
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=47d32bc0813aba1f4g01176a
 
 # 高亮划线

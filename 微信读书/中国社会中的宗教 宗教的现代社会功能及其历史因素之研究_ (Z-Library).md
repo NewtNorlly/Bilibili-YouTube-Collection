@@ -8,8 +8,8 @@ bookmarkCount: 0
 author: ""
 cover: "https://res.weread.qq.com/wrepub/CB_5cj51Z50ZEr06jG6keFLc73R_parsecover"
 progress: "0%"
-readingTime: "7分钟"
-lastReadDate: 2025-08-27
+readingTime: "6分钟"
+lastReadDate: 2025-08-26
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=d3c421a3643425f32553742346c423670414d6e36794436777732713731475398a"
 ---
 
@@ -19,8 +19,8 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=d3c421a3643425f3255374234
 > - ![中国社会中的宗教 宗教的现代社会功能及其历史因素之研究_ (Z-Library)|200](https://res.weread.qq.com/wrepub/CB_5cj51Z50ZEr06jG6keFLc73R_parsecover)
 > - 书名：中国社会中的宗教 宗教的现代社会功能及其历史因素之研究_ (Z-Library)
 > - 阅读进度：0%
-> - 阅读时长：7分钟
-> - 最后阅读：2025-08-27
+> - 阅读时长：6分钟
+> - 最后阅读：2025-08-26
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=d3c421a3643425f32553742346c423670414d6e36794436777732713731475398a
 
 # 高亮划线

@@ -8,9 +8,9 @@ bookmarkCount: 0
 author: "策未来"
 cover: "https://cdn.weread.qq.com/weread/cover/94/cpplatform_jre1bnrf4zp3jsf9sqsegy/t6_cpplatform_jre1bnrf4zp3jsf9sqsegy1705303499.jpg"
 progress: "0%"
-readingTime: "14分钟"
-readingDate: 2025-08-21
-lastReadDate: 2025-08-21
+readingTime: "13分钟"
+readingDate: 2025-08-20
+lastReadDate: 2025-08-20
 isbn: "9787115624611"
 category: "计算机-理论知识"
 publisher: "人民邮电出版社有限公司"
@@ -30,8 +30,8 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=59532af0813ab8767g012c0e"
 > - 分类：计算机-理论知识
 > - 出版社：人民邮电出版社有限公司
 > - 阅读进度：0%
-> - 阅读时长：14分钟
-> - 最后阅读：2025-08-21
+> - 阅读时长：13分钟
+> - 最后阅读：2025-08-20
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=59532af0813ab8767g012c0e
 
 # 高亮划线

@@ -1,0 +1,17 @@
+# 统一仓库文本换行为 LF（Windows 检出也不转 CRLF），避免导入/修复脚本产出混用
+* text=auto eol=lf
+
+# 二进制资源不做换行转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.svg text eol=lf
+*.ico binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.dae binary
+*.glb binary
+*.gltf text eol=lf

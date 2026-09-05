@@ -10,7 +10,6 @@ translator: "百度KFive"
 cover: "https://cdn.weread.qq.com/weread/cover/51/YueWen_42617548/t6_YueWen_42617548.jpg"
 progress: "0%"
 readingTime: "0分钟"
-lastReadDate: 2025-08-20
 isbn: "9787115576491"
 category: "计算机-编程设计"
 publisher: "人民邮电出版社"
@@ -34,7 +33,6 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=818320a0728a4acc8189214"
 > - 微信读书评分：84%
 > - 阅读进度：0%
 > - 阅读时长：0分钟
-> - 最后阅读：2025-08-20
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=818320a0728a4acc8189214
 
 # 高亮划线

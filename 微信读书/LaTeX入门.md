@@ -10,7 +10,7 @@ cover: "https://cdn.weread.qq.com/weread/cover/72/cpplatform_13tjilybmezlj1ohdfc
 progress: "11%"
 readingTime: "9分钟"
 readingDate: 2025-07-23
-lastReadDate: 2025-08-21
+lastReadDate: 2025-08-20
 isbn: "9787121202087"
 category: "科学技术-工业技术"
 publisher: "电子工业出版社"
@@ -33,7 +33,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=30432bb0813ab7c1fg0170b8"
 > - 微信读书评分：91%
 > - 阅读进度：11%
 > - 阅读时长：9分钟
-> - 最后阅读：2025-08-21
+> - 最后阅读：2025-08-20
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=30432bb0813ab7c1fg0170b8
 
 # 高亮划线

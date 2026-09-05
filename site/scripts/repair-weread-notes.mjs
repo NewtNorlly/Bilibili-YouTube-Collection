@@ -3,7 +3,10 @@
 //  2. 每条划线都带创建时间 ⏱（highlight.createTime，Asia/Shanghai）
 //  3. 想法（review）按 range 模糊挂到同章节对应划线（精确>同终点>最大重叠），带 🕰；挂不上的收进「章节点评与书评」
 //  4. 保留站点 frontmatter / 元数据 callout 的其余字段，仅同步数量、进度、时长、日期
-//  5. 特殊：3 个版本《白鹿原》合并到 34631906 一本（按章节名并章、原文去重、合并想法）
+//  5. 特殊：同一本书的多个导入副本合并为一本（按章节名并章、原文去重、合并想法）。
+//     合并组在 MERGE_GROUPS 配置：order=模型合并顺序(首个为进度/时长元数据基准)，
+//     shellId=提供 frontmatter/元数据壳的书，outFile=输出文件名(缺省=shellId 现有文件)，
+//     removeIds=合并后要删除的副本 bookId。
 // 用法：node scripts/repair-weread-notes.mjs --dry-run [--only=关键词] [--dump]
 //      node scripts/repair-weread-notes.mjs --write
 import { readdir, readFile, writeFile, unlink } from 'node:fs/promises';
@@ -337,15 +340,40 @@ async function main() {
     if (id) siteByBookId.set(id, { file, text });
   }
 
-  const report = { rebuilt: 0, skippedEmpty: 0, noCache: 0, totalHighlights: 0, totalWithTime: 0, totalReviews: 0, samples: [] };
-  const BAILU = {
-    survivor: '34631906',
-    deleteIds: ['CB_6fC4CQ4DK4tT75j75AGX15Uq', 'CB_EML06j060GAO6ya6wwFVNA5U'],
-    order: ['34631906', 'CB_EML06j060GAO6ya6wwFVNA5U', 'CB_6fC4CQ4DK4tT75j75AGX15Uq'],
-  };
+  const report = { rebuilt: 0, skippedEmpty: 0, noCache: 0, totalHighlights: 0, totalWithTime: 0, totalReviews: 0, samples: [], merges: [] };
+
+  // 合并组：同一本书的多个副本（官方本 / 个人导入 CB_ 本）合并为一本
+  const MERGE_GROUPS = [
+    {
+      label: '白鹿原',
+      order: ['34631906', 'CB_EML06j060GAO6ya6wwFVNA5U', 'CB_6fC4CQ4DK4tT75j75AGX15Uq'],
+      shellId: '34631906',
+      removeIds: ['CB_EML06j060GAO6ya6wwFVNA5U', 'CB_6fC4CQ4DK4tT75j75AGX15Uq'],
+    },
+    {
+      label: '巨婴国',
+      order: ['CB_CJ462w60NAIe6yC6wwGxj1Pw', 'CB_ABS3OI3Lb9dG6y66ww2Jq8Lk', 'CB_BAv5Rp5P29dG6y66wwCjB036'],
+      shellId: 'CB_CJ462w60NAIe6yC6wwGxj1Pw',
+      outFile: '巨婴国 (武志红) (Z-Library).md',
+      removeIds: ['CB_CJ462w60NAIe6yC6wwGxj1Pw', 'CB_ABS3OI3Lb9dG6y66ww2Jq8Lk', 'CB_BAv5Rp5P29dG6y66wwCjB036'],
+    },
+    {
+      label: '研究生论文写作与时间管理',
+      order: ['CB_3TmBTGBVhB5k76075A7Gi2mb', '3004247422'],
+      shellId: '3004247422',
+      removeIds: ['CB_3TmBTGBVhB5k76075A7Gi2mb'],
+    },
+    {
+      label: '社会学与生活',
+      order: ['CB_9eI8qk8qv9N46yQ6wwEHX8WT', 'CB_0tf9kp9mZ9N46yQ6ww2SA2kb'],
+      shellId: 'CB_9eI8qk8qv9N46yQ6wwEHX8WT',
+      removeIds: ['CB_0tf9kp9mZ9N46yQ6ww2SA2kb'],
+    },
+  ];
+  const mergeIdSet = new Set(MERGE_GROUPS.flatMap((g) => g.order));
 
   for (const [id, siteEntry] of siteByBookId) {
-    if (id === BAILU.survivor || BAILU.deleteIds.includes(id)) continue; // 白鹿原最后统一处理
+    if (mergeIdSet.has(id)) continue; // 合并组最后统一处理
     const cache = cacheById.get(id);
     if (!cache) { report.noCache += 1; continue; }
     if (ONLY && !siteEntry.file.includes(ONLY) && !id.includes(ONLY)) continue;
@@ -366,34 +394,43 @@ async function main() {
     if (DUMP && (!ONLY || siteEntry.file.includes(ONLY) || id.includes(ONLY))) {
       process.stdout.write(`\n===== DUMP ${path.basename(siteEntry.file)} =====\n${rendered.markdown}\n`);
     }
-    if (!DRY_RUN) await writeFile(siteEntry.file, rendered.markdown.replace(/\n/g, '\r\n'), 'utf8');
+    if (!DRY_RUN) await writeFile(siteEntry.file, rendered.markdown, 'utf8');
   }
 
-  // ---- 白鹿原三合一 ----
-  const bailuModels = [];
-  const bailuMetas = [];
-  for (const id of BAILU.order) {
-    const model = buildModel(cacheById.get(id));
-    bailuModels.push(model);
-    bailuMetas.push(model.meta);
-  }
-  const merged = mergeModels(bailuModels, bailuMetas);
-  const survivorSite = parseSiteFile(siteByBookId.get(BAILU.survivor).text);
-  const bailuRendered = renderSiteMarkdown(survivorSite, merged);
-  if (DUMP) process.stdout.write(`\n===== DUMP 白鹿原(合并) =====\n${bailuRendered.markdown}\n`);
-  report.bailu = {
-    chapters: merged.chapters.map((c) => `${c.name}(${c.entries.length})`),
-    highlights: bailuRendered.highlightCount,
-    withTime: bailuRendered.withTime,
-    removedDuplicates: merged.removed,
-    reviews: bailuRendered.reviewCount,
-    lastReadDate: merged.meta.lastReadDate,
-  };
-  if (!DRY_RUN) {
-    await writeFile(siteByBookId.get(BAILU.survivor).file, bailuRendered.markdown.replace(/\n/g, '\r\n'), 'utf8');
-    for (const id of BAILU.deleteIds) {
-      const victim = siteByBookId.get(id)?.file;
-      if (victim) await unlink(victim);
+  // ---- 重名书多副本合并 ----
+  for (const group of MERGE_GROUPS) {
+    if (ONLY && !group.label.includes(ONLY) && !group.order.some((id) => id.includes(ONLY))) continue;
+    const missing = group.order.filter((id) => !cacheById.has(id));
+    if (missing.length) throw new Error(`合并组「${group.label}」缺少缓存: ${missing.join(', ')}`);
+    const shellEntry = siteByBookId.get(group.shellId);
+    if (!shellEntry) throw new Error(`合并组「${group.label}」找不到壳文件 bookId=${group.shellId}`);
+
+    const models = group.order.map((id) => buildModel(cacheById.get(id)));
+    const merged = mergeModels(models, models.map((m) => m.meta));
+    const rendered = renderSiteMarkdown(parseSiteFile(shellEntry.text), merged);
+    if (DUMP) process.stdout.write(`\n===== DUMP ${group.label}(合并) =====\n${rendered.markdown}\n`);
+    report.merges.push({
+      label: group.label,
+      chapters: merged.chapters.map((c) => `${c.name}(${c.entries.length})`),
+      highlights: rendered.highlightCount,
+      withTime: rendered.withTime,
+      removedDuplicates: merged.removed,
+      reviews: rendered.reviewCount,
+      lastReadDate: merged.meta.lastReadDate,
+      readingDate: merged.meta.readingDate,
+      finishedDate: merged.meta.finishedDate,
+      progress: merged.meta.progress,
+      readingTime: merged.meta.readingTime,
+      outFile: group.outFile ?? path.basename(shellEntry.file),
+    });
+    if (!DRY_RUN) {
+      const outPath = group.outFile ? path.join(libraryDirectory, group.outFile) : shellEntry.file;
+      await writeFile(outPath, rendered.markdown, 'utf8');
+      for (const id of group.removeIds) {
+        const victim = siteByBookId.get(id)?.file;
+        // 若待删文件正好等于输出路径（如巨婴国把干净名让给合并结果），跳过删除
+        if (victim && path.resolve(victim) !== path.resolve(outPath)) await unlink(victim);
+      }
     }
   }
 

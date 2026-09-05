@@ -9,8 +9,8 @@ author: "J.K. Rowling"
 cover: "https://cdn.weread.qq.com/weread/cover/10/yuewen_834436/t6_yuewen_8344361704792300.jpg"
 progress: "34%"
 readingTime: "1小时"
-readingDate: 2025-08-24
-lastReadDate: 2025-08-24
+readingDate: 2025-08-23
+lastReadDate: 2025-08-23
 isbn: "9781781106464"
 category: "文学-外国文学"
 publisher: "Pottermore Publishing"
@@ -33,7 +33,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=01d325405cbb8401d6c93d0"
 > - 微信读书评分：92%
 > - 阅读进度：34%
 > - 阅读时长：1小时
-> - 最后阅读：2025-08-24
+> - 最后阅读：2025-08-23
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=01d325405cbb8401d6c93d0
 
 # 高亮划线

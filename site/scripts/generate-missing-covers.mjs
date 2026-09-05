@@ -536,7 +536,7 @@ async function main() {
 
   for (const markdownPath of markdownFiles) {
     const relativePath = toPosix(path.relative(repositoryRoot, markdownPath));
-    if (relativePath === "README.md" || relativePath === "微信读书/微信读书Gallery.md") continue;
+    if (relativePath === "README.md" || relativePath === "智能体操作手册.md" || relativePath === "微信读书/微信读书Gallery.md") continue;
 
     const raw = await readFile(markdownPath, "utf8");
     const parsed = parseFrontmatter(raw);

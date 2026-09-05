@@ -8,7 +8,7 @@ bookmarkCount: 0
 author: "wonder"
 cover: "https://res.weread.qq.com/wrepub/CB_BlG3lm3kx6du6i26gXGks6vV_parsecover"
 progress: "57%"
-readingTime: "1小时6分钟"
+readingTime: "1小时5分钟"
 lastReadDate: 2025-08-28
 sourceUrl: "https://weread.qq.com/book-detail?type=1&v=89c42473643425f354b7736304536304e414965367943367777394465306f399ae"
 ---
@@ -20,7 +20,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=89c42473643425f354b773630
 > - 书名：语言学的邀请 (赛谬尔-早川) (Z-Library)
 > - 作者：wonder
 > - 阅读进度：57%
-> - 阅读时长：1小时6分钟
+> - 阅读时长：1小时5分钟
 > - 最后阅读：2025-08-28
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=89c42473643425f354b7736304536304e414965367943367777394465306f399ae
 

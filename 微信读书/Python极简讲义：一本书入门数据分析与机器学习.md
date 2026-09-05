@@ -10,7 +10,6 @@ cover: "https://cdn.weread.qq.com/weread/cover/77/YueWen_30918598/t6_YueWen_3091
 progress: "36%"
 readingTime: "15分钟"
 readingDate: 2025-05-15
-lastReadDate: 2025-07-23
 isbn: "9787121387043"
 category: "计算机-编程设计"
 publisher: "电子工业出版社"
@@ -33,7 +32,6 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=adb3241071d7c7c6adb07e4"
 > - 微信读书评分：86%
 > - 阅读进度：36%
 > - 阅读时长：15分钟
-> - 最后阅读：2025-07-23
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=adb3241071d7c7c6adb07e4
 
 # 高亮划线

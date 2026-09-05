@@ -9,7 +9,7 @@ author: "策未来"
 cover: "https://cdn.weread.qq.com/weread/cover/83/cpplatform_dpamjtntixs1ea9rftzetm/t6_cpplatform_dpamjtntixs1ea9rftzetm1699849047.jpg"
 progress: "0%"
 readingTime: "1分钟"
-lastReadDate: 2026-08-25
+lastReadDate: 2026-08-24
 isbn: "9787115624796"
 category: "计算机-理论知识"
 publisher: "人民邮电出版社有限公司"
@@ -30,7 +30,7 @@ sourceUrl: "https://weread.qq.com/book-detail?type=1&v=c3532920813ab84bag018ea9"
 > - 出版社：人民邮电出版社有限公司
 > - 阅读进度：0%
 > - 阅读时长：1分钟
-> - 最后阅读：2026-08-25
+> - 最后阅读：2026-08-24
 > - 微信读书：https://weread.qq.com/book-detail?type=1&v=c3532920813ab84bag018ea9
 
 # 高亮划线
